@@ -133,8 +133,8 @@ static void* I2cbus1readXYenH_thread()
         pthread_mutex_unlock(&shared_pipe_mutex);
 
         //Test
-        // printf("yenH_tilt: %0.2f\t dot_up: %d\t dot_middle: %d\t dot_down: %d\n", yenH_curr, dot_up, dot_middle, dot_down);
-        // printf("xenH_lean: %0.2f;\t background_color: 0x%x;\n", xenH_curr, color_background);
+        printf("yenH_tilt: %0.2f\t dot_up: %d\t dot_middle: %d\t dot_down: %d\n", yenH_curr, dot_up, dot_middle, dot_down);
+        printf("xenH_lean: %0.2f;\t background_color: 0x%x;\n", xenH_curr, color_background);
         
         sleepForMs(XY_FREQUENCY);
     }
