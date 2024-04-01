@@ -15,10 +15,12 @@
 //Configure pin 17 & 18
 void initI2c_p917(void);
 void initI2c_p918(void);
+void initI2c_p811(void);
 
 //Read from pin9_17 & p9_18
 int isI2cConfigure_p917();
 int isI2cConfigure_p918();
+int isI2cConfigure_p811(void);
 
 //Initiate I2C bus
 int initI2cBus(char* bus, int address);

@@ -42,6 +42,12 @@ void I2cbus1_init()
     {
         initI2c_p918();
     }
+
+    //Pin8_11 not yet configure -> configure
+    if(isI2cConfigure_p811())
+    {
+        initI2c_p811();
+    }
 }
 
 int I2c1FileDesc_get()

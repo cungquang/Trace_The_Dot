@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "neopixelshareddatastruct.h": "c",
-        "neopixelrgbw-linux.h": "c"
+        "neopixelrgbw-linux.h": "c",
+        "general_helper.h": "c"
     }
 }
