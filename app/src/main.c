@@ -1,4 +1,5 @@
 #include "./neoPixelRGBW-Linux.h"
+#include "../include/i2cbus1_control.h"
 
 // // Regular Color Value
 // #define GREEN_COLOR     0x0f000000
@@ -20,8 +21,7 @@
 // #define BLUE_WHITE_B_COLOR      0x0000ffff // Blue Bright w/ Bright White
 // #define WHITE_BB_COLOR          0xffffffff // White w/ Bright White
 
-
-int main(void)
+void testNeoPixel(void)
 {
     neoPixel_init();
     uint32_t background = 0x0f000000;
@@ -30,5 +30,10 @@ int main(void)
     setColor_Background(background);
     setColor_ithPosition(foreground, 7);    
     neoPixel_cleanup();
+}
 
+int main(void)
+{
+    I2cbus1Control_init();
+    I2cbus1Control_join();
 }

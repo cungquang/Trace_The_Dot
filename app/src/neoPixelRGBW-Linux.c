@@ -26,33 +26,32 @@
 volatile void *pPruBase0;
 volatile sharedMemStruct_t *pSharedPru0;
 
-// Return the address of the PRU's base memory
-volatile void* getPruMmapAddr(void)
+
+//Initiate private function
+volatile void* getPruMmapAddr(void);
+void freePruMmapAddr(volatile void* pPruBase);
+void setColor_Background(uint32_t colorValue);
+void setColor_ithPosition(uint32_t colorValue, int position);
+
+/*
+#########################
+#        PUBLIC         #
+#########################
+*/
+
+
+void neoPixel_init(void)
 {
-    int fd = open("/dev/mem", O_RDWR | O_SYNC);
-    if (fd == -1) {
-        perror("ERROR: could not open /dev/mem");
-        exit(EXIT_FAILURE);
-    }
-
-    // Points to start of PRU memory.
-    volatile void* pPruBase = mmap(0, PRU_LEN, PROT_READ | PROT_WRITE, MAP_SHARED, fd, PRU_ADDR);
-    if (pPruBase == MAP_FAILED) {
-        perror("ERROR: could not map memory");
-        exit(EXIT_FAILURE);
-    }
-    close(fd);
-
-    return pPruBase;
+    // Get access to shared memory for my uses
+    pPruBase0 = getPruMmapAddr();
+    pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
 }
 
-void freePruMmapAddr(volatile void* pPruBase)
+void neoPixel_cleanup(void)
 {
-    if (munmap((void*) pPruBase, PRU_LEN)) {
-        perror("PRU munmap failed");
-        exit(EXIT_FAILURE);
-    }
+    freePruMmapAddr(pPruBase0);
 }
+
 
 void setColor_Background(uint32_t colorValue)
 {
@@ -97,20 +96,150 @@ void setColor_ithPosition(uint32_t colorValue, int position)
     {
         pSharedPru0->position_7 = colorValue;
     }
-    else
+    else if(position == 8)
     {
-        printf("ERROR: Invalid NEO position\n");
+        pSharedPru0->position_8 = colorValue;
     }
 }
 
-void neoPixel_init(void)
+uint32_t getColor_background(float lean)
 {
-    // Get access to shared memory for my uses
-    pPruBase0 = getPruMmapAddr();
-    pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
+    //Lean to the left side - RED 
+    if(lean > 0.45)
+    {
+        return 0x000f0000;
+    }
+    //Lean to the right side - GREEN
+    else if(lean < -0.45) 
+    {
+        return 0x0f000000;
+    }
+    //At center - BLUE
+    else
+    {
+        return 0x00000f00;
+    }
 }
 
-void neoPixel_cleanup(void)
+void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
 {
-    freePruMmapAddr(pPruBase0);
+    /////////////// MOVING UP ///////////////
+    if(tilt > 0.95)
+    {
+        *up = 10;
+        *middle = 9;
+        *down = 8;
+    }
+    //Moving up 0.8 < tilt <= 0.95
+    if(tilt > 0.8 && tilt <= 0.95)
+    {
+        *up = 9;
+        *middle = 8;
+        *down = 7;
+    }
+    //Moving up 0.65 < tilt <= 0.8
+    if(tilt > 0.65 && tilt <= 0.8)
+    {
+        *up = 8;
+        *middle = 7;
+        *down = 6;
+    }
+
+    //Moving up 0.5 < tilt <= 0.65
+    if(tilt > 0.5 && tilt <= 0.65)
+    {
+        *up = 7;
+        *middle = 6;
+        *down = 5;
+    }
+
+    //Moving up 0.35 < tilt <= 0.5
+    if(tilt > 0.35 && tilt <= 0.5)
+    {
+        *up = 6;
+        *middle = 5;
+        *down = 4;
+    }
+
+    /////////////// CENTER ///////////////
+    //Within center
+    if(tilt <= 0.35 && tilt >= -0.35)
+    {
+        *up = -1;
+        *middle = -1;
+        *down = -1;
+    }
+
+    /////////////// MOVING DOWN /////////////// 
+    //Moving down -0.35 > tilt >= -0.5
+    if(tilt < -0.35 && tilt >= -0.5)
+    {
+        *up = 4;
+        *middle = 5;
+        *down = 6;
+    }
+
+    //Moving down -0.5 > tilt >= -0.65
+    if(tilt < -0.5 && tilt >= -0.65)
+    {
+        *up = 5;
+        *middle = 6;
+        *down = 7;
+    }
+    //Moving down -0.65 > tilt >= -0.8
+    if(tilt < -0.65 && tilt >= -0.8)
+    {
+        *up = 6;
+        *middle = 7;
+        *down = 8;
+    }
+    //Moving down -0.8 > tilt >= -0.95
+    if(tilt < -0.8 && tilt >= -0.95)
+    {
+        *up = 7;
+        *middle = 8;
+        *down = 9;
+    }
+    if(tilt < -0.95)
+    {
+        *up = 8;
+        *middle = 9;
+        *down = 10;
+    }
+}
+
+
+/*
+#########################
+#       PRIVATE         #
+#########################
+*/
+
+
+// Return the address of the PRU's base memory
+volatile void* getPruMmapAddr(void)
+{
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
+    if (fd == -1) {
+        perror("ERROR: could not open /dev/mem");
+        exit(EXIT_FAILURE);
+    }
+
+    // Points to start of PRU memory.
+    volatile void* pPruBase = mmap(0, PRU_LEN, PROT_READ | PROT_WRITE, MAP_SHARED, fd, PRU_ADDR);
+    if (pPruBase == MAP_FAILED) {
+        perror("ERROR: could not map memory");
+        exit(EXIT_FAILURE);
+    }
+    close(fd);
+
+    return pPruBase;
+}
+
+void freePruMmapAddr(volatile void* pPruBase)
+{
+    if (munmap((void*) pPruBase, PRU_LEN)) {
+        perror("PRU munmap failed");
+        exit(EXIT_FAILURE);
+    }
 }
