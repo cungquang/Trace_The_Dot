@@ -5,7 +5,7 @@
 #define BUFFER_SIZE 2
 #define RESOLUTION_8BITS_SHIFT 16000
 #define SELECT_SCALE 2
-#define XY_FREQUENCY 100
+#define XY_FREQUENCY 150
 
 //Operation
 static int isTerminate = 0;
@@ -109,15 +109,32 @@ static void* I2cbus1readXYenH_thread()
         
         pthread_mutex_lock(&shared_pipe_mutex);
 
-        getColor_background(xenH_curr, &color_background);
+        // Get Y value => dot_up & dot_middle & dot_down
         getPosition_focusPoint(yenH_curr, &dot_up, &dot_middle, &dot_down);
         getColor_focusPoint(&color_background, &color_up, &color_middle, &color_down);
+        
+        // Get X value => color_background
+        getColor_background(xenH_curr, &color_background);
+
+        // Only draw background - tilt at center
+        if(dot_up == -1 || dot_down == -1 || dot_middle == -1)
+        {
+            setColor_background(color_background);
+        }   
+        // No background - tilt not at center
+        else
+        {
+            setColor_background(0);
+            setColor_ithPosition(color_up, dot_up);
+            setColor_ithPosition(color_middle, dot_middle);
+            setColor_ithPosition(color_down, dot_down);
+        }
 
         pthread_mutex_unlock(&shared_pipe_mutex);
 
-        //background
-        printf("xenH - lean: %0.2f;\t yenH - tilt: %0.2f\t up: %d\t middle: %d\t down: %d\n", xenH_curr, yenH_curr, dot_up, dot_middle, dot_down);
-        printf("background color: %x;\t up: %x;\t middle: %x;\t down: %x\n", color_background, color_up, color_middle, color_down);
+        //Test
+        // printf("yenH_tilt: %0.2f\t dot_up: %d\t dot_middle: %d\t dot_down: %d\n", yenH_curr, dot_up, dot_middle, dot_down);
+        // printf("xenH_lean: %0.2f;\t background_color: 0x%x;\n", xenH_curr, color_background);
         
         sleepForMs(XY_FREQUENCY);
     }

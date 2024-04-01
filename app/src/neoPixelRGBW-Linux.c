@@ -34,12 +34,9 @@
 volatile void *pPruBase0;
 volatile sharedMemStruct_t *pSharedPru0;
 
-
 //Initiate private function
 volatile void* getPruMmapAddr(void);
 void freePruMmapAddr(volatile void* pPruBase);
-void setColor_Background(uint32_t colorValue);
-void setColor_ithPosition(uint32_t colorValue, int position);
 
 /*
 #########################
