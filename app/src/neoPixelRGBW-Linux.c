@@ -74,6 +74,7 @@ void setColor_background(uint32_t colorValue)
 
 void setColor_ithPosition(uint32_t colorValue, int position)
 {
+    // 1 - is bottom & 8 - is top 
     if(position == 1)
     {
         pSharedPru0->position_1 = colorValue;
@@ -164,43 +165,43 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
     /////////////// MOVING UP ///////////////
     if(tilt > 0.95)
     {
-        *up = 10;
-        *middle = 9;
-        *down = 8;
+        *up = 1;
+        *middle = 0;
+        *down = -1;
         return;
     }
     //Moving up 0.8 < tilt <= 0.95
     if(tilt > 0.8 && tilt <= 0.95)
     {
-        *up = 9;
-        *middle = 8;
-        *down = 7;
+        *up = 2;
+        *middle = 1;
+        *down = 0;
         return;
     }
     //Moving up 0.65 < tilt <= 0.8
     if(tilt > 0.65 && tilt <= 0.8)
     {
-        *up = 8;
-        *middle = 7;
-        *down = 6;
+        *up = 3;
+        *middle = 2;
+        *down = 1;
         return;
     }
 
     //Moving up 0.5 < tilt <= 0.65
     if(tilt > 0.5 && tilt <= 0.65)
     {
-        *up = 7;
-        *middle = 6;
-        *down = 5;
+        *up = 4;
+        *middle = 3;
+        *down = 2;
         return;
     }
 
     //Moving up 0.35 < tilt <= 0.5
     if(tilt > 0.35 && tilt <= 0.5)
     {
-        *up = 6;
-        *middle = 5;
-        *down = 4;
+        *up = 5;
+        *middle = 4;
+        *down = 3;
         return;
     }
 
@@ -208,9 +209,9 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
     //Within center
     if(tilt <= 0.35 && tilt >= -0.35)
     {
-        *up = -1;
-        *middle = -1;
-        *down = -1;
+        *up = 0;
+        *middle = 0;
+        *down = 0;
         return;
     }
 

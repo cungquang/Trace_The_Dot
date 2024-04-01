@@ -44,7 +44,7 @@ void I2cbus1_init()
     }
 
     //Pin8_11 not yet configure -> configure
-    if(isI2cConfigure_p811())
+    if(!isI2cConfigure_p811())
     {
         initI2c_p811();
     }

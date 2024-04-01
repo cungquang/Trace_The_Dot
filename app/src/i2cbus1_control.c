@@ -117,7 +117,7 @@ static void* I2cbus1readXYenH_thread()
         getColor_background(xenH_curr, &color_background);
 
         // Only draw background - tilt at center
-        if(dot_up == -1 || dot_down == -1 || dot_middle == -1)
+        if(dot_up == 0 && dot_down == 0 && dot_middle == 0)
         {
             setColor_background(color_background);
         }   
