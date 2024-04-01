@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "neopixelshareddatastruct.h": "c"
+        "neopixelshareddatastruct.h": "c",
+        "neopixelrgbw-linux.h": "c"
     }
 }

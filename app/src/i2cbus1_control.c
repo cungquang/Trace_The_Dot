@@ -1,4 +1,5 @@
 #include "../include/i2cbus1_control.h"
+#include "../include/neoPixelRGBW-Linux.h"
 
 #define TRIGGER_BIT 0x27
 #define BUFFER_SIZE 2
