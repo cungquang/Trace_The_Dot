@@ -27,7 +27,7 @@ void testNeoPixel(void)
     uint32_t background = 0x0f000000;
     uint32_t foreground = 0x0000ff00;
     
-    setColor_Background(background);
+    setColor_background(background);
     setColor_ithPosition(foreground, 7);    
     neoPixel_cleanup();
 }

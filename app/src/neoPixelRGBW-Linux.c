@@ -136,7 +136,7 @@ void getColor_background(float lean, uint32_t *background)
 void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *middle_color, uint32_t *down_color)
 {
     // background is GREEN
-    if(background == GREEN_COLOR)
+    if(*background == GREEN_COLOR)
     {
         *up_color = GREEN_COLOR;
         *middle_color = GREEN_B_COLOR;
@@ -144,7 +144,7 @@ void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *mid
     }
     
     // background is RED
-    if(background == RED_COLOR)
+    if(*background == RED_COLOR)
     {
         *up_color = RED_COLOR;
         *middle_color = RED_B_COLOR;
@@ -152,7 +152,7 @@ void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *mid
     }
 
     // background is BLUE
-    if(background == BLUE_COLOR)
+    if(*background == BLUE_COLOR)
     {
         *up_color = BLUE_COLOR;
         *middle_color = BLUE_B_COLOR;
