@@ -11,9 +11,15 @@
 static int isTerminate = 0;
 
 //Focus point
-static int focus_up;
-static int focus_middle;
-static int focus_down;
+static int dot_up;
+static int dot_middle;
+static int dot_down;
+
+//Display colors:
+static uint32_t color_background;
+static uint32_t color_up;
+static uint32_t color_middle;
+static uint32_t color_down;
 
 //Raw data G-force
 static unsigned char xen_L_H[BUFFER_SIZE];
@@ -102,8 +108,16 @@ static void* I2cbus1readXYenH_thread()
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
         
         pthread_mutex_lock(&shared_pipe_mutex);
-        printf("Tilt value: %.2f\n", xenH_curr);
+
+        getColor_background(xenH_curr, &color_background);
+        getPosition_focusPoint(yenH_curr, &dot_up, &dot_middle, &dot_down);
+        getColor_focusPoint(&color_background, &color_up, &color_middle, &color_down);
+
         pthread_mutex_unlock(&shared_pipe_mutex);
+
+        //background
+        printf("xenH - lean: %0.2f;\t yenH - tilt: %0.2f\t up: %d\t middle: %d\t down: %d\n", xenH_curr, yenH_curr, dot_up, dot_middle, dot_down);
+        printf("background color: %x;\t up: %x;\t middle: %x;\t down: %x\n", color_background, color_up, color_middle, color_down);
         
         sleepForMs(XY_FREQUENCY);
     }
