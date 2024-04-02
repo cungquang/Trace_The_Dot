@@ -5,6 +5,7 @@
         "general_helper.h": "c",
         "i2cbus1_control.h": "c",
         "i2c_configure.h": "c",
-        "joystick-linux.h": "c"
+        "joystick-linux.h": "c",
+        "joystickshareddatastruct.h": "c"
     }
 }

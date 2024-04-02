@@ -57,7 +57,7 @@ volatile register uint32_t __R31;   // Input GPIO register
 
 // Shared Memory Configuration
 // -----------------------------------------------------------
-#define THIS_PRU_DRAM       0x00000         // Address of DRAM
+#define THIS_PRU_DRAM       0x02000         // Address of DRAM
 #define OFFSET              0x200           // Skip 0x100 for Stack, 0x100 for Heap (from makefile)
 #define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
 
@@ -68,6 +68,10 @@ void main(void)
 {
     int buttonDownPressCount = 0;
     int buttonRightPressCount = 0;
+    pSharedMemStruct->joystickDown_isPressed = true;
+    pSharedMemStruct->joystickDown_count = 0;
+    pSharedMemStruct->joystickRight_isPressed = true;
+    pSharedMemStruct->joystickRight_count = 0;
 
     // Toggle digit on/off GPIO; slow down when button pressed
     while (true) {
@@ -94,3 +98,4 @@ void main(void)
         }
     }
 }
+

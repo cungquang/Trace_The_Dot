@@ -51,21 +51,25 @@ void joystick_cleanup(void)
 
 bool joystickDown_isPressed(void)
 {
+    pSharedPru1->joystickDown_isPressed = true;
     return pSharedPru1->joystickDown_isPressed;
 }
 
 int joystickDown_pressCount(void)
 {
+    pSharedPru1->joystickDown_count = 0;
     return pSharedPru1->joystickDown_count;
 }
 
 bool joystickRight_isPressed(void)
 {
+    pSharedPru1->joystickRight_isPressed = true;
     return pSharedPru1->joystickRight_isPressed;
 }
 
 int joystickRight_pressCount(void)
 {
+    pSharedPru1->joystickRight_count = 0;
     return pSharedPru1->joystickRight_count;
 }
 
