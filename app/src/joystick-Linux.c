@@ -22,15 +22,13 @@
 #define PRU1_MEM_FROM_BASE(base) ((volatile jsSharedMemStruct_t *)((uintptr_t)(base) + PRU1_DRAM + PRU_MEM_RESERVED))
 #define PRUSHARED_MEM_FROM_BASE(base) ( (base) + PRU_SHAREDMEM)
 
-
 //Pointer
 volatile void *pPruBase1;
 volatile jsSharedMemStruct_t *pSharedPru1;
 
-
 //Initiate private function
-volatile void* getPruMmapAddr(void);
-void freePruMmapAddr(volatile void* pPruBase);
+static volatile void* getPruMmapAddr(void);
+static void freePruMmapAddr(volatile void* pPruBase);
 
 
 /*
@@ -80,7 +78,7 @@ int joystickRight_pressCount(void)
 
 
 // Return the address of the PRU's base memory
-volatile void* getPruMmapAddr(void)
+static volatile void* getPruMmapAddr(void)
 {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1) {
@@ -99,7 +97,7 @@ volatile void* getPruMmapAddr(void)
     return pPruBase;
 }
 
-void freePruMmapAddr(volatile void* pPruBase)
+static void freePruMmapAddr(volatile void* pPruBase)
 {
     if (munmap((void*) pPruBase, PRU_LEN)) {
         perror("PRU munmap failed");

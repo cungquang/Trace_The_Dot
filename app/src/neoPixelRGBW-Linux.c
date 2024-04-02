@@ -35,8 +35,8 @@ volatile void *pPruBase0;
 volatile sharedMemStruct_t *pSharedPru0;
 
 //Initiate private function
-volatile void* getPruMmapAddr(void);
-void freePruMmapAddr(volatile void* pPruBase);
+static volatile void* getPruMmapAddr(void);
+static void freePruMmapAddr(volatile void* pPruBase);
 
 /*
 #########################
@@ -267,7 +267,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
 
 
 // Return the address of the PRU's base memory
-volatile void* getPruMmapAddr(void)
+static volatile void* getPruMmapAddr(void)
 {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1) {
@@ -286,7 +286,7 @@ volatile void* getPruMmapAddr(void)
     return pPruBase;
 }
 
-void freePruMmapAddr(volatile void* pPruBase)
+static void freePruMmapAddr(volatile void* pPruBase)
 {
     if (munmap((void*) pPruBase, PRU_LEN)) {
         perror("PRU munmap failed");
