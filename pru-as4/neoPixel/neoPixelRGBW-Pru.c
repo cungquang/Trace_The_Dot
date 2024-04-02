@@ -76,18 +76,21 @@ void main(void)
     //Init color array
     uint32_t color[STR_LEN];
 
-    while(1) {
+    while(1) 
+    {
         // Down is pressed
-        // if(!(__R31 & JOYSTICK_DOWN_MASK))
-        // {
-        //     pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
-        // }
+        if(!(__R31 & JOYSTICK_DOWN_MASK))
+        {
+            buttonPressCount++;
+            pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
+        }
 
         // Right is pressed
-        if (!(__R31 & JOYSTICK_RIGHT_MASK)) {
+        if (!(__R31 & JOYSTICK_RIGHT_MASK))
         {
-            pSharedMemStruct->joystickRight_count++;
-            pSharedMemStruct->joystickRight_isPressed = true;         
+            buttonPressCount++;
+            pSharedMemStruct->joystickRight_count = buttonPressCount;
+            pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;         
         }
 
         // COLOURS

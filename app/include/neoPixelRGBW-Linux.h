@@ -2,6 +2,7 @@
 #define _NEOPIXELRGBW_LINUX_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 void neoPixel_init(void);
 void neoPixel_cleanup(void);

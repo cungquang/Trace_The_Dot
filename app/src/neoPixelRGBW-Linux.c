@@ -1,9 +1,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include "../include/general_helper.h"
 #include "./neoPixelRGBW-Linux.h"
 #include "../../pru-as4/neoPixel/neoPixelSharedDataStruct.h"
 
