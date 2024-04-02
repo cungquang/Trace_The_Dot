@@ -71,7 +71,8 @@ void main(void)
 {
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
-    int buttonPressCount = 0;
+    int downPressCount = 0;
+    int rightPressCount = 0;
 
     //Init color array
     uint32_t color[STR_LEN];
@@ -81,15 +82,16 @@ void main(void)
         // Down is pressed
         if(!(__R31 & JOYSTICK_DOWN_MASK))
         {
-            buttonPressCount++;
+            downPressCount++;
+            pSharedMemStruct->joystickDown_count = downPressCount;
             pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
         }
 
         // Right is pressed
         if (!(__R31 & JOYSTICK_RIGHT_MASK))
         {
-            buttonPressCount++;
-            pSharedMemStruct->joystickRight_count = buttonPressCount;
+            rightPressCount++;
+            pSharedMemStruct->joystickRight_count = rightPressCount;
             pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;         
         }
 
