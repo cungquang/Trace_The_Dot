@@ -1,7 +1,7 @@
 #include <time.h>
 #include "../include/general_helper.h"
 
-static double weighted = 0.001;
+static double weighted_newData = 0.35;
 
 void runCommand(char* command)
 {
@@ -118,7 +118,7 @@ void trimString(char* input)
 
 double exponentialAvg(double current_avg, double previous_avg)
 {
-    return current_avg*weighted + previous_avg*(1-weighted);
+    return current_avg*weighted_newData + previous_avg*(1-weighted_newData);
 }
 
 double regularAvg(long current_size, double current_sum) 
