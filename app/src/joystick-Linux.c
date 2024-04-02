@@ -1,7 +1,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
 #include "../include/joystick-Linux.h"

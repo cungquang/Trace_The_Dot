@@ -1,6 +1,8 @@
 #ifndef _JOYSTICK_LINUX_H_
 #define _JOYSTICK_LINUX_H_
 
+#include <stdbool.h>
+
 //Initiate joystick
 void joystick_init(void);
 void joystick_cleanup(void);
