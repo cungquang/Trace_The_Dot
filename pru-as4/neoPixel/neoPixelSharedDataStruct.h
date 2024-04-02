@@ -2,6 +2,7 @@
 #define _NEOPIXELSHAREDDATASTRUCT_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
 // WARNING:
 // Fields in the struct must be aligned to match ARM's alignment
@@ -13,6 +14,8 @@
 // My Shared Memory Structure
 // ----------------------------------------------------------------
 typedef struct {
+    bool joystickDown_isPressed;
+    bool joystickRight_isPressed;
     _Alignas(4) uint32_t position_1;
     _Alignas(4) uint32_t position_2;
     _Alignas(4) uint32_t position_3;

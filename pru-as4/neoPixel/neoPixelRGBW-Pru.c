@@ -42,11 +42,20 @@
 
 #define SPEED 200000000/5    // Time to wait between updates
 
-// P8_11 for output (on R30), PRU0
-#define DATA_PIN 15               // Bit number to output one
-
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
+
+// P8_12 for input (on R30) - 14-Seg Display 
+#define DIGIT_ON_OFF_MASK (1 << 14)
+
+// P8_11 for output (on R30), PRU0
+#define DATA_PIN 15                             // Bit number to output one
+
+// P8_15 for input (on R31), PRU0 (button right)
+#define JOYSTICK_RIGHT_MASK (1 << 15)
+
+// P8_16 for input (on R31), PRU0 (button down)
+#define JOYSTICK_DOWN_MASK (1 << 14)
 
 //Shared memory
 #define THIS_PRU_DRAM       0x00000         // Address of DRAM - PRU0
@@ -67,6 +76,17 @@ void main(void)
     uint32_t color[STR_LEN];
 
     while(1) {
+        // Down is pressed
+        if(!(__R31 & JOYSTICK_DOWN_MASK))
+        {
+            pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
+        }
+
+        // Right is pressed
+        if (!(__R31 & JOYSTICK_RIGHT_MASK)) {
+            pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) != 0;         
+        }
+
         // COLOURS
         // - 1st element in array is 1st (bottom) on LED strip; last element is last on strip (top)
         // - Bits: {Green/8 bits} {Red/8 bits} {Blue/8 bits} {White/8 bits}

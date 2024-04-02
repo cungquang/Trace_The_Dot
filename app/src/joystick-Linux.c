@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 #include "../include/joystick-Linux.h"
-#include "../../pru-as4/joystick/joystickSharedDataStruct.h"
+#include "../../pru-as4/neoPixel/neoPixelSharedDataStruct.h"
+#include "../include/general_helper.h"
 
+#define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
+#define CONFIGURE_PIN_816 "config-pin p8_16 pruin"
 
 // General PRU Memomry Sharing Routine
 // ----------------------------------------------------------------
@@ -17,13 +20,13 @@
 #define PRU_MEM_RESERVED    0x200        // Amount used by stack and heap
 
 // Convert base address to each memory section
-#define PRU0_MEM_FROM_BASE(base) ((volatile jsSharedMemStruct_t *)((uintptr_t)(base) + PRU0_DRAM + PRU_MEM_RESERVED))
-#define PRU1_MEM_FROM_BASE(base) ((volatile jsSharedMemStruct_t *)((uintptr_t)(base) + PRU1_DRAM + PRU_MEM_RESERVED))
+#define PRU0_MEM_FROM_BASE(base) ((volatile sharedMemStruct_t *)((uintptr_t)(base) + PRU0_DRAM + PRU_MEM_RESERVED))
+#define PRU1_MEM_FROM_BASE(base) ((volatile sharedMemStruct_t *)((uintptr_t)(base) + PRU1_DRAM + PRU_MEM_RESERVED))
 #define PRUSHARED_MEM_FROM_BASE(base) ( (base) + PRU_SHAREDMEM)
 
 //Pointer
-volatile void *pPruBase1;
-volatile jsSharedMemStruct_t *pSharedPru1;
+volatile void *pPruBase0;
+volatile sharedMemStruct_t *pSharedPru0;
 
 //Initiate private function
 volatile void* joystick_getPruMmapAddr(void);
@@ -39,34 +42,27 @@ void joystick_freePruMmapAddr(volatile void* pPruBase);
 
 void joystick_init(void)
 {
+    runCommand(CONFIGURE_PIN_815);
+    runCommand(CONFIGURE_PIN_816);
+    
     // Get access to shared memory for my uses
-    pPruBase1 = joystick_getPruMmapAddr();
-    pSharedPru1 = PRU1_MEM_FROM_BASE(pPruBase1);
+    pPruBase0 = joystick_getPruMmapAddr();
+    pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
 }
 
 void joystick_cleanup(void)
 {
-    joystick_freePruMmapAddr(pPruBase1);
+    joystick_freePruMmapAddr(pPruBase0);
 }
 
 bool joystickDown_isPressed(void)
 {
-    return pSharedPru1->joystickDown_isPressed;
-}
-
-int joystickDown_pressCount(void)
-{
-    return pSharedPru1->joystickDown_count;
+    return pSharedPru0->joystickDown_isPressed;
 }
 
 bool joystickRight_isPressed(void)
 {
-    return pSharedPru1->joystickRight_isPressed;
-}
-
-int joystickRight_pressCount(void)
-{
-    return pSharedPru1->joystickRight_count;
+    return pSharedPru0->joystickRight_isPressed;
 }
 
 /*

@@ -6,6 +6,7 @@
         "i2cbus1_control.h": "c",
         "i2c_configure.h": "c",
         "joystick-linux.h": "c",
-        "joystickshareddatastruct.h": "c"
+        "joystickshareddatastruct.h": "c",
+        "resource_table_empty.h": "c"
     }
 }
