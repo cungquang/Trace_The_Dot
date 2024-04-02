@@ -101,27 +101,27 @@ static void* I2cbus1readXYenH_thread()
 {  
     while(!isTerminate)
     {
-        //Count total sample
+        // Count total sample
         sample_count++;
 
-        //Convert raw to G force value
-        //X value: LEFT - RIGHT
+        // Convert raw to G force value
+        // X value: LEFT - RIGHT
         xen_L_H[0] = I2cbus1Read_OutXL();
         xen_L_H[1] = I2cbus1Read_OutXH();
         xenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(xen_L_H[0], xen_L_H[1]));
         xenH_sum += xenH_curr;
 
-        //Y value: UP - DOWN
+        // Y value: UP - DOWN
         yen_L_H[0] = I2cbus1Read_OutYL();
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
         yenH_sum += yenH_curr;
 
-        //Calculate average
+        // Calculate average
         xenH_avg = Sample_calculateAvg(xenH_sum, xenH_avg);
         yenH_avg = Sample_calculateAvg(yenH_sum, yenH_avg);
         
-        //Critical section
+        // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);
 
         // Get Y value => dot_up & dot_middle & dot_down
@@ -147,7 +147,7 @@ static void* I2cbus1readXYenH_thread()
 
         pthread_mutex_unlock(&shared_pipe_mutex);
 
-        //Test
+        // Print test
         printf("yenH_tilt: %0.2f\t dot_up: %d\t dot_middle: %d\t dot_down: %d\n", yenH_curr, dot_up, dot_middle, dot_down);
         printf("xenH_lean: %0.2f;\t background_color: 0x%x;\n", xenH_curr, color_background);
         
@@ -171,7 +171,7 @@ static float I2cbus1_convertToGForce(int16_t rawData)
 static float Sample_calculateAvg(float curr_sum, float prev_avg)
 {
     //Update previous average - this is overall average - not tight to the batch
-    if(sample_count == 1){
+    if(sample_count <= 1){
         return regularAvg(sample_count, curr_sum);
     }
     else{
