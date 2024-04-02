@@ -16,8 +16,6 @@
 typedef struct {
     bool joystickDown_isPressed;
     bool joystickRight_isPressed;
-    _Alignas(4) uint32_t joystickDown_count;
-    _Alignas(4) uint32_t joystickRight_count;
     _Alignas(4) uint32_t position_1;
     _Alignas(4) uint32_t position_2;
     _Alignas(4) uint32_t position_3;

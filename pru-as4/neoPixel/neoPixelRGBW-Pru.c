@@ -29,7 +29,7 @@
 
 #include <stdint.h>
 #include <pru_cfg.h>
-#include <string.h>
+#include <stdbool.h>
 #include "resource_table_empty.h"
 #include "./neoPixelSharedDataStruct.h"
 
@@ -71,8 +71,6 @@ void main(void)
 {
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
-    int downPressCount = 0;
-    int rightPressCount = 0;
 
     //Init color array
     uint32_t color[STR_LEN];
@@ -80,20 +78,8 @@ void main(void)
     while(1) 
     {
         // Down is pressed
-        if(!(__R31 & JOYSTICK_DOWN_MASK))
-        {
-            downPressCount++;
-            pSharedMemStruct->joystickDown_count = downPressCount;
-            pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
-        }
-
-        // Right is pressed
-        if (!(__R31 & JOYSTICK_RIGHT_MASK))
-        {
-            rightPressCount++;
-            pSharedMemStruct->joystickRight_count = rightPressCount;
-            pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;         
-        }
+        pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
+        pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) != 0;
 
         // COLOURS
         // - 1st element in array is 1st (bottom) on LED strip; last element is last on strip (top)
