@@ -40,7 +40,7 @@
 #define zeroCyclesOff   600/5
 #define resetCycles     60000/5 // Must be at least 50u, use 60u
 
-#define SPEED 20000000/5    // Time to wait between updates
+#define SPEED 200000000/5    // Time to wait between updates
 
 // P8_11 for output (on R30), PRU0
 #define DATA_PIN 15               // Bit number to output one
@@ -109,7 +109,7 @@ void displayLED(uint32_t * color)
     __R30 &= ~(0x1<<DATA_PIN);   // Clear the GPIO pin
     __delay_cycles(resetCycles);
 
-    // Wait
+    // Wait between update
     __delay_cycles(SPEED);
 }
 

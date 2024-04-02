@@ -5,7 +5,7 @@
 #define BUFFER_SIZE 2
 #define RESOLUTION_8BITS_SHIFT 16000
 #define SELECT_SCALE 2
-#define XY_FREQUENCY 50
+#define XY_FREQUENCY 100
 
 //Operation
 static int isTerminate = 0;
@@ -109,17 +109,12 @@ static void* I2cbus1readXYenH_thread()
         xen_L_H[0] = I2cbus1Read_OutXL();
         xen_L_H[1] = I2cbus1Read_OutXH();
         xenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(xen_L_H[0], xen_L_H[1]));
-        xenH_sum += xenH_curr;
 
         // Y value: UP - DOWN
         yen_L_H[0] = I2cbus1Read_OutYL();
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
-        yenH_sum += yenH_curr;
 
-        // Calculate average
-        xenH_avg = Sample_calculateAvg(xenH_sum, xenH_avg);
-        yenH_avg = Sample_calculateAvg(yenH_sum, yenH_avg);
         
         // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);
@@ -148,8 +143,6 @@ static void* I2cbus1readXYenH_thread()
         pthread_mutex_unlock(&shared_pipe_mutex);
 
         // Print test
-        // printf("yenH_tilt_avg: %0.2f\t dot_up: %d\t dot_middle: %d\t dot_down: %d\n", yenH_avg, dot_up, dot_middle, dot_down);
-        // printf("xenH_lean_avg: %0.2f;\t background_color: 0x%x;\n", xenH_avg, color_background);
         printf("yenH_tilt_avg: %0.2f      yenH_tilt_curr: %0.2f\n", yenH_avg, yenH_curr);
         printf("xenH_lean_avg: %0.2f      xenH_lean_curr: %0.2f\n", xenH_avg, xenH_curr);
 
@@ -167,16 +160,4 @@ static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH)
 static float I2cbus1_convertToGForce(int16_t rawData)
 {
     return (float)rawData/RESOLUTION_8BITS_SHIFT;
-}
-
-// Calculate average using smoothing exponential -> reduce noise
-static float Sample_calculateAvg(float curr_sum, float prev_avg)
-{
-    //Update previous average - this is overall average - not tight to the batch
-    if(sample_count <= 1){
-        return regularAvg(sample_count, curr_sum);
-    }
-    else{
-        return exponentialAvg(regularAvg(sample_count, curr_sum), prev_avg);   
-    }
 }
