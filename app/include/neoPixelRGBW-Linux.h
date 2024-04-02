@@ -18,5 +18,6 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down);
 bool joystickDown_isPressed(void);
 bool joystickRight_isPressed(void);
 int joystickRight_count(void);
+int joystickDown_count(void);
 
 #endif

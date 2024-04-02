@@ -79,6 +79,11 @@ int joystickRight_count(void)
     return pSharedPru0->joystickRight_count;
 }
 
+int joystickDown_count(void)
+{
+    return pSharedPru0->joystickDown_count;
+}
+
 /////////////////////////////// SETTER ///////////////////////////////
 
 void setColor_background(uint32_t colorValue)
