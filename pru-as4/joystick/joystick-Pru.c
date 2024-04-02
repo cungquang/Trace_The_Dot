@@ -6,7 +6,7 @@
 
     Setup (all commands on Target)
     ******************************************************
-    1.  Set both GPIO pins to be controlled by PRU0
+    1.  Set both GPIO pins to be controlled by PRU0/PRU1
             config-pin p8_12 pruout
             config-pin p8_15 pruin
 
@@ -37,6 +37,7 @@
 #include <stdbool.h>
 #include <pru_cfg.h>
 #include "resource_table_empty.h"
+#include "./joystickSharedDataStruct.h"
 
 // Delay 250ms (# cycles 200Mhz / 4)
 #define DELAY_250_MS 50000000
@@ -52,32 +53,44 @@ volatile register uint32_t __R31;   // Input GPIO register
 //   = JSRT (Joystick Right) on Zen Cape
 //   (Happens to be bit 15 and p8_15; just a coincidence; see P8 header info sheet)
 #define JOYSTICK_RIGHT_MASK (1 << 15)
+#define JOYSTICK_DOWN_MASK (1 << 14)
 
+// Shared Memory Configuration
+// -----------------------------------------------------------
+#define THIS_PRU_DRAM       0x00000         // Address of DRAM
+#define OFFSET              0x200           // Skip 0x100 for Stack, 0x100 for Heap (from makefile)
+#define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
+
+// This works for both PRU0 and PRU1 as both map their own memory to 0x0000000
+volatile jsSharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_USABLE;
 
 void main(void)
 {
-    int buttonPressCount = 0;
+    int buttonDownPressCount = 0;
+    int buttonRightPressCount = 0;
 
     // Toggle digit on/off GPIO; slow down when button pressed
     while (true) {
-        // 2. N'th press flashes N times
-        if (!(__R31 & JOYSTICK_RIGHT_MASK)) {
-            buttonPressCount++;
-            for (int i = 0; i < buttonPressCount; i++) {
-                __R30 |= DIGIT_ON_OFF_MASK;
-                __delay_cycles(DELAY_250_MS);                
-                __R30 &= ~DIGIT_ON_OFF_MASK;
-                __delay_cycles(DELAY_250_MS);                
-            }
-
-            // 3. Reset on press (with 2.)
-            // (For fun, move it outside this if statement and see the behaviour)
-            while (!(__R31 & JOYSTICK_RIGHT_MASK)) {
-                buttonPressCount = 0;
-            }
+        
+        if(!(__R31 & JOYSTICK_DOWN_MASK))
+        {
+            buttonDownPressCount++;
+            pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
+            pSharedMemStruct->joystickDown_count = buttonDownPressCount;
         }
 
+        // While the button being pressed => return value 0 at target position
+        if (!(__R31 & JOYSTICK_RIGHT_MASK)) {
+            // for (int i = 0; i < buttonPressCount; i++) {
+            //     __R30 |= DIGIT_ON_OFF_MASK;
+            //     __delay_cycles(DELAY_250_MS);                
+            //     __R30 &= ~DIGIT_ON_OFF_MASK;
+            //     __delay_cycles(DELAY_250_MS);                
+            // }
 
-
+            buttonRightPressCount++;
+            pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) != 0;
+            pSharedMemStruct->joystickRight_count = buttonRightPressCount;            
+        }
     }
 }

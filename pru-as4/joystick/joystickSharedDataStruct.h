@@ -1,8 +1,8 @@
-#ifndef _NEOPIXELSHAREDDATASTRUCT_H_
-#define _NEOPIXELSHAREDDATASTRUCT_H_
+#ifndef _JOYSTICKSHAREDDATASTRUCT_H_H
+#define _JOYSTICKSHAREDDATASTRUCT_H_H
 
-#include <stdbool.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // WARNING:
 // Fields in the struct must be aligned to match ARM's alignment
@@ -14,16 +14,11 @@
 // My Shared Memory Structure
 // ----------------------------------------------------------------
 typedef struct {
-    _Alignas(4) uint32_t position_1;
-    _Alignas(4) uint32_t position_2;
-    _Alignas(4) uint32_t position_3;
-    _Alignas(4) uint32_t position_4;
-    _Alignas(4) uint32_t position_5;
-    _Alignas(4) uint32_t position_6;
-    _Alignas(4) uint32_t position_7;
-    _Alignas(4) uint32_t position_8;
+    bool joystickDown_isPressed;
+    bool joystickRight_isPressed;
+    _Alignas(4) uint32_t joystickDown_count;
+    _Alignas(4) uint32_t joystickRight_count;
     
-    
-} sharedMemStruct_t;
+} jsSharedMemStruct_t;
 
 #endif

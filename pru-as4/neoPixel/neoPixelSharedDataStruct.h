@@ -1,7 +1,6 @@
 #ifndef _NEOPIXELSHAREDDATASTRUCT_H_
 #define _NEOPIXELSHAREDDATASTRUCT_H_
 
-#include <stdbool.h>
 #include <stdint.h>
 
 // WARNING:
