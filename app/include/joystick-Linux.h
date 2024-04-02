@@ -1,5 +1,5 @@
-#ifndef _NEOPIXELSHAREDDATASTRUCT_H_
-#define _NEOPIXELSHAREDDATASTRUCT_H_
+#ifndef _JOYSTICK_LINUX_H_
+#define _JOYSTICK_LINUX_H_
 
 //Initiate joystick
 void joystick_init(void);

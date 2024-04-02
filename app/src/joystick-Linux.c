@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
-#include "./neoPixelRGBW-Linux.h"
+#include "../include/joystick-Linux.h"
 #include "../../pru-as4/joystick/joystickSharedDataStruct.h"
 
 
