@@ -66,25 +66,14 @@ void neoPixel_cleanup(void)
 
 bool joystickDown_isPressed(void)
 {
-    printf("Inside Down Press: %d\n", pSharedPru0->joystickDown_isPressed);
     return pSharedPru0->joystickDown_isPressed;
 }
 
 bool joystickRight_isPressed(void)
 {
-    printf("Inside Right Press: %d\n", pSharedPru0->joystickRight_isPressed);
     return pSharedPru0->joystickRight_isPressed;
 }
 
-int joystickRight_count(void)
-{
-    return pSharedPru0->joystickRight_count;
-}
-
-int joystickDown_count(void)
-{
-    return pSharedPru0->joystickDown_count;
-}
 
 /////////////////////////////// SETTER ///////////////////////////////
 

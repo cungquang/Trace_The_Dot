@@ -78,8 +78,8 @@ void main(void)
     while(1) 
     {
         // Down is pressed
-        pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
-        pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) != 0;
+        pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) == 0;
+        pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) == 0;
 
         // COLOURS
         // - 1st element in array is 1st (bottom) on LED strip; last element is last on strip (top)

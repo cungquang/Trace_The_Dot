@@ -11,11 +11,8 @@ int main(void)
     // neoPixel_cleanup();
 
     neoPixel_init();
-
     printf("Down is pressed: %d\n", joystickDown_isPressed());
-    printf("Down count: %d\n", joystickDown_count());
 
     printf("Right is pressed: %d\n", joystickRight_isPressed());
-    printf("Right count: %d\n", joystickRight_count());
     neoPixel_cleanup();
 }
