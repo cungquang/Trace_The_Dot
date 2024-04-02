@@ -35,8 +35,8 @@ volatile void *pPruBase0;
 volatile sharedMemStruct_t *pSharedPru0;
 
 //Initiate private function
-static volatile void* getPruMmapAddr(void);
-static void freePruMmapAddr(volatile void* pPruBase);
+volatile void* neo_getPruMmapAddr(void);
+void neo_freePruMmapAddr(volatile void* pPruBase);
 
 /*
 #########################
@@ -48,13 +48,13 @@ static void freePruMmapAddr(volatile void* pPruBase);
 void neoPixel_init(void)
 {
     // Get access to shared memory for my uses
-    pPruBase0 = getPruMmapAddr();
+    pPruBase0 = neo_getPruMmapAddr();
     pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
 }
 
 void neoPixel_cleanup(void)
 {
-    freePruMmapAddr(pPruBase0);
+    neo_freePruMmapAddr(pPruBase0);
 }
 
 /////////////////////////////// SETTER ///////////////////////////////
@@ -267,7 +267,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
 
 
 // Return the address of the PRU's base memory
-static volatile void* getPruMmapAddr(void)
+volatile void* neo_getPruMmapAddr(void)
 {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1) {
@@ -286,7 +286,7 @@ static volatile void* getPruMmapAddr(void)
     return pPruBase;
 }
 
-static void freePruMmapAddr(volatile void* pPruBase)
+void neo_freePruMmapAddr(volatile void* pPruBase)
 {
     if (munmap((void*) pPruBase, PRU_LEN)) {
         perror("PRU munmap failed");

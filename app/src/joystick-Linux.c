@@ -26,8 +26,8 @@ volatile void *pPruBase1;
 volatile jsSharedMemStruct_t *pSharedPru1;
 
 //Initiate private function
-static volatile void* getPruMmapAddr(void);
-static void freePruMmapAddr(volatile void* pPruBase);
+volatile void* joystick_getPruMmapAddr(void);
+void joystick_freePruMmapAddr(volatile void* pPruBase);
 
 
 /*
@@ -40,36 +40,32 @@ static void freePruMmapAddr(volatile void* pPruBase);
 void joystick_init(void)
 {
     // Get access to shared memory for my uses
-    pPruBase1 = getPruMmapAddr();
+    pPruBase1 = joystick_getPruMmapAddr();
     pSharedPru1 = PRU1_MEM_FROM_BASE(pPruBase1);
 }
 
 void joystick_cleanup(void)
 {
-    freePruMmapAddr(pPruBase1);
+    joystick_freePruMmapAddr(pPruBase1);
 }
 
 bool joystickDown_isPressed(void)
 {
-    pSharedPru1->joystickDown_isPressed = true;
     return pSharedPru1->joystickDown_isPressed;
 }
 
 int joystickDown_pressCount(void)
 {
-    pSharedPru1->joystickDown_count = 0;
     return pSharedPru1->joystickDown_count;
 }
 
 bool joystickRight_isPressed(void)
 {
-    pSharedPru1->joystickRight_isPressed = true;
     return pSharedPru1->joystickRight_isPressed;
 }
 
 int joystickRight_pressCount(void)
 {
-    pSharedPru1->joystickRight_count = 0;
     return pSharedPru1->joystickRight_count;
 }
 
@@ -79,9 +75,8 @@ int joystickRight_pressCount(void)
 #########################
 */
 
-
 // Return the address of the PRU's base memory
-static volatile void* getPruMmapAddr(void)
+volatile void* joystick_getPruMmapAddr(void)
 {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd == -1) {
@@ -100,7 +95,7 @@ static volatile void* getPruMmapAddr(void)
     return pPruBase;
 }
 
-static void freePruMmapAddr(volatile void* pPruBase)
+void joystick_freePruMmapAddr(volatile void* pPruBase)
 {
     if (munmap((void*) pPruBase, PRU_LEN)) {
         perror("PRU munmap failed");

@@ -68,14 +68,11 @@ void main(void)
 {
     int buttonDownPressCount = 0;
     int buttonRightPressCount = 0;
-    pSharedMemStruct->joystickDown_isPressed = true;
-    pSharedMemStruct->joystickDown_count = 0;
-    pSharedMemStruct->joystickRight_isPressed = true;
-    pSharedMemStruct->joystickRight_count = 0;
 
     // Toggle digit on/off GPIO; slow down when button pressed
     while (true) {
-        
+        buttonDownPressCount++;
+        buttonRightPressCount++;
         if(!(__R31 & JOYSTICK_DOWN_MASK))
         {
             buttonDownPressCount++;
