@@ -23,6 +23,7 @@ typedef struct {
     _Alignas(4) uint32_t position_7;
     _Alignas(4) uint32_t position_8;
     
+    
 } sharedMemStruct_t;
 
 #endif

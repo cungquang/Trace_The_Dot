@@ -1,7 +1,7 @@
 #include <time.h>
 #include "../include/general_helper.h"
 
-static double weighted_newData = 0.15;
+static double weighted_newData = 0.99;
 
 void runCommand(char* command)
 {
