@@ -31,7 +31,7 @@
 #include <pru_cfg.h>
 #include <string.h>
 #include "resource_table_empty.h"
-#include "./neoPixelSharedDataStruct.h"
+#include "../neoPixelSharedDataStruct.h"
 
 #define STR_LEN         8       // # LEDs in our string
 #define oneCyclesOn     700/5   // Stay on 700ns

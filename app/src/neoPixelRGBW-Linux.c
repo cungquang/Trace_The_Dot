@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 #include "./neoPixelRGBW-Linux.h"
-#include "../../pru-as4/neoPixelSharedDataStruct.h"
+#include "../../pru-as4/neoPixel/neoPixelSharedDataStruct.h"
 
 // Constant color
 #define GREEN_COLOR     0x0f000000

@@ -28,11 +28,6 @@ static unsigned char yen_L_H[BUFFER_SIZE];
 //Converted G-force value
 static float xenH_curr;
 static float yenH_curr;
-static double xenH_sum;
-static double yenH_sum;
-static float xenH_avg;
-static float yenH_avg;
-static long long sample_count;
 
 //Threads
 static pthread_t i2cbus1XYenH_id;
@@ -44,7 +39,6 @@ static pthread_mutex_t shared_pipe_mutex = PTHREAD_MUTEX_INITIALIZER;
 static void* I2cbus1readXYenH_thread();
 static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH);
 static float I2cbus1_convertToGForce(int16_t rawData);
-static float Sample_calculateAvg(float curr_sum, float prev_avg);
 
 
 /*
@@ -101,9 +95,6 @@ static void* I2cbus1readXYenH_thread()
 {  
     while(!isTerminate)
     {
-        // Count total sample
-        sample_count++;
-
         // Convert raw to G force value
         // X value: LEFT - RIGHT
         xen_L_H[0] = I2cbus1Read_OutXL();
@@ -143,8 +134,8 @@ static void* I2cbus1readXYenH_thread()
         pthread_mutex_unlock(&shared_pipe_mutex);
 
         // Print test
-        printf("yenH_tilt_avg: %0.2f      yenH_tilt_curr: %0.2f\n", yenH_avg, yenH_curr);
-        printf("xenH_lean_avg: %0.2f      xenH_lean_curr: %0.2f\n", xenH_avg, xenH_curr);
+        // printf("yenH_tilt_avg: %0.2f      yenH_tilt_curr: %0.2f\n", yenH_avg, yenH_curr);
+        // printf("xenH_lean_avg: %0.2f      xenH_lean_curr: %0.2f\n", xenH_avg, xenH_curr);
 
         sleepForMs(XY_FREQUENCY);
     }
