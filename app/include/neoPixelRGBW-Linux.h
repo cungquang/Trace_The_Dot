@@ -13,5 +13,9 @@ void getColor_background(float lean, uint32_t *background);
 void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *middle_color, uint32_t *down_color);
 void getPosition_focusPoint(float tilt, int *up, int *middle, int *down);
 
+// Joystick
+bool joystickDown_isPressed(void);
+bool joystickRight_isPressed(void);
+int joystickRight_count(void);
 
 #endif

@@ -7,6 +7,10 @@
 #include "./neoPixelRGBW-Linux.h"
 #include "../../pru-as4/neoPixel/neoPixelSharedDataStruct.h"
 
+//Configure pin for Joystick
+#define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
+#define CONFIGURE_PIN_816 "config-pin p8_16 pruin"
+
 // Constant color
 #define GREEN_COLOR     0x0f000000
 #define RED_COLOR       0x000f0000
@@ -47,6 +51,9 @@ void neo_freePruMmapAddr(volatile void* pPruBase);
 
 void neoPixel_init(void)
 {
+    runCommand(CONFIGURE_PIN_815);
+    runCommand(CONFIGURE_PIN_816);
+
     // Get access to shared memory for my uses
     pPruBase0 = neo_getPruMmapAddr();
     pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
@@ -55,6 +62,21 @@ void neoPixel_init(void)
 void neoPixel_cleanup(void)
 {
     neo_freePruMmapAddr(pPruBase0);
+}
+
+bool joystickDown_isPressed(void)
+{
+    return pSharedPru0->joystickDown_isPressed;
+}
+
+bool joystickRight_isPressed(void)
+{
+    return pSharedPru0->joystickRight_isPressed;
+}
+
+int joystickRight_count(void)
+{
+    return pSharedPru0->joystickRight_count;
 }
 
 /////////////////////////////// SETTER ///////////////////////////////

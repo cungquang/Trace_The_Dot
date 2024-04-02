@@ -31,7 +31,7 @@
 #include <pru_cfg.h>
 #include <string.h>
 #include "resource_table_empty.h"
-#include "../neoPixelSharedDataStruct.h"
+#include "./neoPixelSharedDataStruct.h"
 
 #define STR_LEN         8       // # LEDs in our string
 #define oneCyclesOn     700/5   // Stay on 700ns
@@ -71,20 +71,23 @@ void main(void)
 {
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+    int buttonPressCount = 0;
 
     //Init color array
     uint32_t color[STR_LEN];
 
     while(1) {
         // Down is pressed
-        if(!(__R31 & JOYSTICK_DOWN_MASK))
-        {
-            pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
-        }
+        // if(!(__R31 & JOYSTICK_DOWN_MASK))
+        // {
+        //     pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) != 0;
+        // }
 
         // Right is pressed
         if (!(__R31 & JOYSTICK_RIGHT_MASK)) {
-            pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) != 0;         
+        {
+            pSharedMemStruct->joystickRight_count++;
+            pSharedMemStruct->joystickRight_isPressed = true;         
         }
 
         // COLOURS
