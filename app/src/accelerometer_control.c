@@ -1,4 +1,4 @@
-#include "../include/i2cbus1_control.h"
+#include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
 
 #define TRIGGER_BIT 0x27
