@@ -7,12 +7,18 @@
 #define SELECT_SCALE 2
 #define XY_FREQUENCY 100
 
-//Prevent bounce back
+//LEAN BOUND
 #define LEAN_DEBOUNCE_THRESHOLD 6
-#define TILT_DEBOUNCE_THRESHOLD 5
-#define GREEN_COLOR     0x0f000000
-#define RED_COLOR       0x000f0000
-#define BLUE_COLOR      0x00000f00
+#define LEAN_CENTER_UPPER_BOUND 0.15
+#define LEAN_CENTER_LOWER_BOUND -0.15
+
+//TILT BOUND
+#define TILT_DEBOUNCE_THRESHOLD 4
+#define TILT_CENTER_UPPER_BOUND 0.15
+#define TILT_CENTER_LOWER_BOUND -0.15
+
+//CENTER COLOR
+#define CENTER_COLOR      0x00000f00
 
 //Operation
 static int isTerminate = 0;
@@ -172,7 +178,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
         getColor_background(lean_curr, background);
 
         //Change lean status
-        if(color_background != BLUE_COLOR)
+        if(color_background != CENTER_COLOR)
         {
             isLeaned = 1;
         }
@@ -181,7 +187,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
     else 
     {
         // Count (continuously) debounce
-        if(lean_curr >= - 0.15 && lean_curr <= 0.15)
+        if(lean_curr >= LEAN_CENTER_LOWER_BOUND && lean_curr <= LEAN_CENTER_LOWER_BOUND)
         {
             leanDebounce_count++;
         }
@@ -211,7 +217,7 @@ static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMi
     if(isTilt == 0)
     {
         // Get Y value => dot_up & dot_middle & dot_downdd
-        getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
+        getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown, TILT_CENTER_UPPER_BOUND, TILT_CENTER_LOWER_BOUND);
 
         //Change lean status
         if(dotUp != 0 || dotMiddle != 0 || dotDown != 0)
@@ -223,7 +229,7 @@ static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMi
     else 
     {
         // Count (continuously) debounce
-        if(tilt_curr >= -0.05 && tilt_curr <= 0.05)
+        if(tilt_curr >= TILT_CENTER_LOWER_BOUND && tilt_curr <= TILT_CENTER_UPPER_BOUND)
         {
             tiltDebounce_count++;
         }
@@ -232,7 +238,7 @@ static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMi
             tiltDebounce_count = 0;
 
             // Get Y value => dot_up & dot_middle & dot_downdd
-            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
+            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown, TILT_CENTER_UPPER_BOUND, TILT_CENTER_LOWER_BOUND);
         }
 
         // Meet threshold
@@ -242,7 +248,7 @@ static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMi
             tiltDebounce_count = 0;
 
             // Get Y value => dot_up & dot_middle & dot_downdd
-            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
+            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown, TILT_CENTER_UPPER_BOUND, TILT_CENTER_LOWER_BOUND);
         }
     }
 }

@@ -180,10 +180,10 @@ void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *mid
     return;
 }
 
-void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
+void getPosition_focusPoint(float tilt, int *up, int *middle, int *down, float centerUpper, float centerLower)
 {
     /////////////// MOVING UP ///////////////
-    if(tilt > 0.65)
+    if(tilt > (centerUpper + 0.4))
     {
         *up = 8;
         *middle = 9;
@@ -191,7 +191,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
         return;
     }
     //Moving up 0.8 < tilt <= 0.95
-    if(tilt > 0.50 && tilt <= 0.65)
+    if(tilt > (centerUpper + 0.3) && tilt <= (centerUpper + 0.4))
     {
         *up = 7;
         *middle = 8;
@@ -199,7 +199,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
         return;
     }
     //Moving up 0.65 < tilt <= 0.8
-    if(tilt > 0.35 && tilt <= 0.50)
+    if(tilt > (centerUpper + 0.2) && tilt <= (centerUpper + 0.3))
     {
         *up = 6;
         *middle = 7;
@@ -208,7 +208,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
     }
 
     //Moving up 0.5 < tilt <= 0.65
-    if(tilt > 0.20 && tilt <= 0.35)
+    if(tilt > (centerUpper + 0.1) && tilt <= (centerUpper + 0.2))
     {
         *up = 5;
         *middle = 6;
@@ -217,7 +217,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
     }
 
     //Moving up 0.35 < tilt <= 0.5
-    if(tilt > 0.05 && tilt <= 0.20)
+    if(tilt > centerUpper && tilt <= (centerUpper + 0.1))
     {
         *up = 4;
         *middle = 5;
@@ -227,7 +227,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
 
     /////////////// CENTER ///////////////
     //Within center
-    if(tilt <= 0.05 && tilt >= -0.05)
+    if(tilt <= centerUpper && tilt >= centerLower)
     {
         *up = 0;
         *middle = 0;
@@ -237,7 +237,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
 
     /////////////// MOVING DOWN /////////////// 
     //Moving down -0.35 > tilt >= -0.5
-    if(tilt < -0.05 && tilt >= -0.20)
+    if(tilt < centerLower && tilt >= (centerLower - 0.1))
     {
         *up = 5;
         *middle = 4;
@@ -246,7 +246,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
     }
 
     //Moving down -0.5 > tilt >= -0.65
-    if(tilt < -0.20 && tilt >= -0.35)
+    if(tilt < (centerLower - 0.1) && tilt >= (centerLower - 0.2))
     {
         *up = 4;
         *middle = 3;
@@ -254,7 +254,7 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
         return;
     }
     //Moving down -0.65 > tilt >= -0.8
-    if(tilt < -0.35 && tilt >= -0.50)
+    if(tilt < (centerLower - 0.2) && tilt >= (centerLower - 0.3))
     {
         *up = 3;
         *middle = 2;
@@ -262,14 +262,14 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down)
         return;
     }
     //Moving down -0.8 > tilt >= -0.95
-    if(tilt < -0.50 && tilt >= -0.65)
+    if(tilt < (centerLower - 0.3) && tilt >= (centerLower - 0.4))
     {
         *up = 2;
         *middle = 1;
         *down = 0;
         return;
     }
-    if(tilt < -0.65)
+    if(tilt < (centerLower - 0.4))
     {
         *up = 1;
         *middle = 0;
