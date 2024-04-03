@@ -129,6 +129,7 @@ void setColor_ithPosition(uint32_t colorValue, int position)
 
 /////////////////////////////// GETTER ///////////////////////////////
 
+
 void getColor_background(float lean, uint32_t *background)
 {
     //Lean to the left side - RED 
@@ -148,6 +149,7 @@ void getColor_background(float lean, uint32_t *background)
     }
     return;
 }
+
 
 void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *middle_color, uint32_t *down_color)
 {

@@ -9,7 +9,9 @@
 
 //Prevent bounce back
 #define BOUNCE_BACK_CENTER  10
-#define BLUE_COLOR          0x00000f00
+#define GREEN_COLOR     0x0f000000
+#define RED_COLOR       0x000f0000
+#define BLUE_COLOR      0x00000f00
 
 //Operation
 static int isTerminate = 0;
@@ -34,7 +36,8 @@ static float xenH_curr;
 static float yenH_curr;
 
 //Prevent bounce back
-static long center_bounce;
+static long leanDebounce_count;
+static int isLeaned;
 
 //Threads
 static pthread_t i2cbus1XYenH_id;
@@ -46,8 +49,7 @@ static pthread_mutex_t shared_pipe_mutex = PTHREAD_MUTEX_INITIALIZER;
 static void* I2cbus1readXYenH_thread();
 static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH);
 static float I2cbus1_convertToGForce(int16_t rawData);
-static int I2cbus1_preventBounceBackToCenter(float lean);
-
+static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * background);
 
 /*
 #########################
@@ -126,7 +128,7 @@ static void* I2cbus1readXYenH_thread()
         getColor_focusPoint(&color_background, &color_up, &color_middle, &color_down);
 
         // Get X value => color_background
-        getColor_background(xenH_curr, &color_background);
+        I2cbus1_preventBounceBackToCenter(xenH_curr, &color_background);
 
         // Only draw background - tilt at center
         if(dot_up == 0 && dot_down == 0 && dot_middle == 0)
@@ -144,10 +146,6 @@ static void* I2cbus1readXYenH_thread()
 
         pthread_mutex_unlock(&shared_pipe_mutex);
 
-        // Print test
-        // printf("yenH_tilt_avg: %0.2f      yenH_tilt_curr: %0.2f\n", yenH_avg, yenH_curr);
-        // printf("xenH_lean_avg: %0.2f      xenH_lean_curr: %0.2f\n", xenH_avg, xenH_curr);
-
         sleepForMs(XY_FREQUENCY);
     }
 
@@ -164,25 +162,43 @@ static float I2cbus1_convertToGForce(int16_t rawData)
     return (float)rawData/RESOLUTION_8BITS_SHIFT;
 }
 
-static int I2cbus1_preventBounceBackToCenter(float lean)
-{   
-    if(color_background == BLUE_COLOR)
+static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * background)
+{  
+    // Not yet lean
+    if(isLeaned == 0)
     {
-        //Counting bounce back
-        if(lean < 0.05 && lean > -0.05)
+        //Update background color
+        getColor_background(lean_curr, background);
+
+        //Change lean status
+        if(color_background != BLUE_COLOR)
         {
-            center_bounce++;
+            isLeaned = 1;
+        }
+    }
+    // Already lean
+    else 
+    {
+        // Count (continuously) debounce
+        if(lean_curr >= - 0.05 && lean_curr <= 0.05)
+        {
+            leanDebounce_count++;
         }
         else{
-            center_bounce = 0;
+            // Reset debounce
+            leanDebounce_count = 0;
+
+            // Update the latest color
+            getColor_background(lean_curr, background);
         }
-    }   
 
-    //Check if center_bounce > threshold
-    if(center_bounce > BOUNCE_BACK_CENTER)
-    {
-        isLeaned = 0;
-        center_bounce = 0;
+        // Meet threshold
+        if(leanDebounce_count > BOUNCE_BACK_CENTER)
+        {
+            isLeaned = 0;
+            leanDebounce_count = 0;
+            // Update the latest color
+            getColor_background(lean_curr, background);
+        }
     }
-
 }
