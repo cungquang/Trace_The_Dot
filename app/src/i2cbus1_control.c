@@ -8,7 +8,7 @@
 #define XY_FREQUENCY 100
 
 //Prevent bounce back
-#define BOUNCE_BACK_CENTER  10
+#define BOUNCE_BACK_CENTER  6
 #define GREEN_COLOR     0x0f000000
 #define RED_COLOR       0x000f0000
 #define BLUE_COLOR      0x00000f00
@@ -178,7 +178,7 @@ static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * backgr
     else 
     {
         // Count (continuously) debounce
-        if(lean_curr >= - 0.05 && lean_curr <= 0.05)
+        if(lean_curr >= - 0.15 && lean_curr <= 0.15)
         {
             leanDebounce_count++;
         }
