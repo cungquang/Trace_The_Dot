@@ -12,6 +12,7 @@
         "pwm_configure.h": "c",
         "accelerometer_control.h": "c",
         "shareddata-linux.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "sound_control.h": "c"
     }
 }
