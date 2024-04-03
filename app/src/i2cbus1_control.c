@@ -7,6 +7,10 @@
 #define SELECT_SCALE 2
 #define XY_FREQUENCY 100
 
+//Prevent bounce back
+#define BOUNCE_BACK_CENTER  10
+#define BLUE_COLOR          0x00000f00
+
 //Operation
 static int isTerminate = 0;
 
@@ -29,6 +33,9 @@ static unsigned char yen_L_H[BUFFER_SIZE];
 static float xenH_curr;
 static float yenH_curr;
 
+//Prevent bounce back
+static long center_bounce;
+
 //Threads
 static pthread_t i2cbus1XYenH_id;
 
@@ -39,6 +46,7 @@ static pthread_mutex_t shared_pipe_mutex = PTHREAD_MUTEX_INITIALIZER;
 static void* I2cbus1readXYenH_thread();
 static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH);
 static float I2cbus1_convertToGForce(int16_t rawData);
+static int I2cbus1_preventBounceBackToCenter(float lean);
 
 
 /*
@@ -106,14 +114,17 @@ static void* I2cbus1readXYenH_thread()
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
 
-        
+        // Ensure not debouncing
+        I2cbus1_preventBounceBackToCenter(xenH_curr);
+        printf("xenH-lean: %0.2f     xen_L_XL: %d      xen_L_XH: %d \n", xenH_curr, xen_L_H[0], xen_L_H[1]);
+
         // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);
 
         // Get Y value => dot_up & dot_middle & dot_downdd
         getPosition_focusPoint(yenH_curr, &dot_up, &dot_middle, &dot_down);
         getColor_focusPoint(&color_background, &color_up, &color_middle, &color_down);
-        
+
         // Get X value => color_background
         getColor_background(xenH_curr, &color_background);
 
@@ -151,4 +162,27 @@ static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH)
 static float I2cbus1_convertToGForce(int16_t rawData)
 {
     return (float)rawData/RESOLUTION_8BITS_SHIFT;
+}
+
+static int I2cbus1_preventBounceBackToCenter(float lean)
+{   
+    if(color_background == BLUE_COLOR)
+    {
+        //Counting bounce back
+        if(lean < 0.05 && lean > -0.05)
+        {
+            center_bounce++;
+        }
+        else{
+            center_bounce = 0;
+        }
+    }   
+
+    //Check if center_bounce > threshold
+    if(center_bounce > BOUNCE_BACK_CENTER)
+    {
+        isLeaned = 0;
+        center_bounce = 0;
+    }
+
 }

@@ -58,6 +58,7 @@ volatile register uint32_t __R31;
 #define JOYSTICK_DOWN_MASK (1 << 14)
 
 //Shared memory
+#define THIS_PRU_DRAM1       0x02000         // Address of DRAM - PRU0
 #define THIS_PRU_DRAM       0x00000         // Address of DRAM - PRU0
 #define OFFSET              0x200           // Skip 0x100 for Stack, 0x100 for Heap (from makefile)
 #define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
