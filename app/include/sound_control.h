@@ -5,5 +5,7 @@
 #include <pthread.h>
 
 void Sound_init(void);
+void Sound_join(void);
+void Sound_setTerminate(void);
 
 #endif

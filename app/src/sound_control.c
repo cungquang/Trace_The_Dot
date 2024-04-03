@@ -53,7 +53,6 @@ void Sound_setTerminate(void)
 #########################
 */
 
-
 static void * Sound_playTargetSound()
 {
     while(!isTerminate)
@@ -61,10 +60,12 @@ static void * Sound_playTargetSound()
         if(playHitTarget)
         {
             Sound_playHitTarget();
+            playHitTarget = 0;
         }
         else if(playMissTarget)
         {
             Sound_playMissTarget();
+            playMissTarget = 0;
         }
 
         // Delay before recheck
@@ -73,7 +74,6 @@ static void * Sound_playTargetSound()
 
     return NULL;
 }
-
 
 static void Sound_playHitTarget(void)
 {
