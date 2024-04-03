@@ -116,8 +116,6 @@ static void* I2cbus1readXYenH_thread()
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
 
-        // Ensure not debouncing
-        I2cbus1_preventBounceBackToCenter(xenH_curr);
         printf("xenH-lean: %0.2f     xen_L_XL: %d      xen_L_XH: %d \n", xenH_curr, xen_L_H[0], xen_L_H[1]);
 
         // Critical section
