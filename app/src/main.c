@@ -1,14 +1,17 @@
 #include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
+#include "../../hal/include/pwm_configure.h"
 #include <stdbool.h>
 
 
 int main(void)
 {
-    neoPixel_init();
-    Accelerometer_init();
-    Accelerometer_join();
-    neoPixel_cleanup();
+    Pwm_init();
+    Pwm_playHighCNote(500);
+    // neoPixel_init();
+    // Accelerometer_init();
+    // Accelerometer_join();
+    // neoPixel_cleanup();
 
     // neoPixel_init();
     // printf("Down is pressed: %d\n", joystickDown_isPressed());
