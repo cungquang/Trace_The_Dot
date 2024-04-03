@@ -1,5 +1,5 @@
-#include "../include/neoPixelRGBW-Linux.h"
 #include "../include/i2cbus1_control.h"
+#include "../include/sharedData-Linux.h"
 #include <stdbool.h>
 
 
