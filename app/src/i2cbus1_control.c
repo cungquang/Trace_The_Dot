@@ -8,7 +8,8 @@
 #define XY_FREQUENCY 100
 
 //Prevent bounce back
-#define BOUNCE_BACK_CENTER  6
+#define LEAN_DEBOUNCE_THRESHOLD 6
+#define TILT_DEBOUNCE_THRESHOLD 5
 #define GREEN_COLOR     0x0f000000
 #define RED_COLOR       0x000f0000
 #define BLUE_COLOR      0x00000f00
@@ -38,6 +39,8 @@ static float yenH_curr;
 //Prevent bounce back
 static long leanDebounce_count;
 static int isLeaned;
+static long tiltDebounce_count;
+static int isTilt;
 
 //Threads
 static pthread_t i2cbus1XYenH_id;
@@ -49,7 +52,8 @@ static pthread_mutex_t shared_pipe_mutex = PTHREAD_MUTEX_INITIALIZER;
 static void* I2cbus1readXYenH_thread();
 static int16_t I2cbus1_getRawData(int8_t rawL, int8_t rawH);
 static float I2cbus1_convertToGForce(int16_t rawData);
-static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * background);
+static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background);
+static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMiddle, int *dotDown);
 
 /*
 #########################
@@ -121,25 +125,24 @@ static void* I2cbus1readXYenH_thread()
         // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);
 
-        // Get Y value => dot_up & dot_middle & dot_downdd
-        getPosition_focusPoint(yenH_curr, &dot_up, &dot_middle, &dot_down);
+        // Get X value => color_background
+        lean_preventDebounceToCenter(xenH_curr, &color_background);
         getColor_focusPoint(&color_background, &color_up, &color_middle, &color_down);
 
-        // Get X value => color_background
-        I2cbus1_preventBounceBackToCenter(xenH_curr, &color_background);
+        // Get dot position
+        tilt_preventDebounceToCenter(yenH_curr, &dot_up, &dot_middle, &dot_down);
 
-        // Only draw background - tilt at center
-        if(dot_up == 0 && dot_down == 0 && dot_middle == 0)
-        {
-            setColor_background(color_background);
-        }   
-        // No background - tilt not at center
-        else
+        // Away from center
+        if(isTilt)
         {
             setColor_background(0);
             setColor_ithPosition(color_up, dot_up);
             setColor_ithPosition(color_middle, dot_middle);
             setColor_ithPosition(color_down, dot_down);
+        }   
+        else
+        {
+            setColor_background(color_background);
         }
 
         pthread_mutex_unlock(&shared_pipe_mutex);
@@ -160,7 +163,7 @@ static float I2cbus1_convertToGForce(int16_t rawData)
     return (float)rawData/RESOLUTION_8BITS_SHIFT;
 }
 
-static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * background)
+static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
 {  
     // Not yet lean
     if(isLeaned == 0)
@@ -191,12 +194,55 @@ static void I2cbus1_preventBounceBackToCenter(float lean_curr, uint32_t * backgr
         }
 
         // Meet threshold
-        if(leanDebounce_count > BOUNCE_BACK_CENTER)
+        if(leanDebounce_count > LEAN_DEBOUNCE_THRESHOLD)
         {
             isLeaned = 0;
             leanDebounce_count = 0;
             // Update the latest color
             getColor_background(lean_curr, background);
+        }
+    }
+}
+
+
+static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMiddle, int *dotDown)
+{
+    // Not yet tilt
+    if(isTilt == 0)
+    {
+        // Get Y value => dot_up & dot_middle & dot_downdd
+        getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
+
+        //Change lean status
+        if(dotUp != 0 || dotMiddle != 0 || dotDown != 0)
+        {
+            isTilt = 1;
+        }
+    }
+    // Already tilt
+    else 
+    {
+        // Count (continuously) debounce
+        if(tilt_curr >= -0.05 && tilt_curr <= 0.05)
+        {
+            tiltDebounce_count++;
+        }
+        else{
+            // Reset debounce
+            tiltDebounce_count = 0;
+
+            // Get Y value => dot_up & dot_middle & dot_downdd
+            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
+        }
+
+        // Meet threshold
+        if(tiltDebounce_count > TILT_DEBOUNCE_THRESHOLD)
+        {
+            isTilt = 0;
+            tiltDebounce_count = 0;
+
+            // Get Y value => dot_up & dot_middle & dot_downdd
+            getPosition_focusPoint(tilt_curr, dotUp, dotMiddle, dotDown);
         }
     }
 }
