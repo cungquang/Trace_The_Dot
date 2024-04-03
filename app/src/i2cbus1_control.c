@@ -8,12 +8,12 @@
 #define XY_FREQUENCY 100
 
 //LEAN BOUND
-#define LEAN_DEBOUNCE_THRESHOLD 10
-#define LEAN_CENTER_UPPER_BOUND 0.1
-#define LEAN_CENTER_LOWER_BOUND -0.1
+#define LEAN_DEBOUNCE_THRESHOLD 7
+#define LEAN_CENTER_UPPER_BOUND 0.25
+#define LEAN_CENTER_LOWER_BOUND -0.25
 
 //TILT BOUND
-#define TILT_DEBOUNCE_THRESHOLD 3
+#define TILT_DEBOUNCE_THRESHOLD 5
 #define TILT_CENTER_UPPER_BOUND 0.2
 #define TILT_CENTER_LOWER_BOUND -0.2
 
@@ -187,7 +187,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
     else 
     {
         // Count (continuously) debounce
-        if(lean_curr >= LEAN_CENTER_LOWER_BOUND && lean_curr <= LEAN_CENTER_LOWER_BOUND)
+        if(lean_curr >= LEAN_CENTER_LOWER_BOUND && lean_curr <= LEAN_CENTER_UPPER_BOUND)
         {
             leanDebounce_count++;
         }
