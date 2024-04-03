@@ -1,5 +1,5 @@
-#ifndef _NEOPIXELRGBW_LINUX_H_
-#define _NEOPIXELRGBW_LINUX_H_
+#ifndef _SHAREDDATA_LINUX_H_
+#define _SHAREDDATA_LINUX_H_
 
 #include <stdint.h>
 #include <stdbool.h>

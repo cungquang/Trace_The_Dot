@@ -126,7 +126,7 @@ static void* I2cbus1readXYenH_thread()
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
 
-        printf("xenH-lean: %0.2f     yen_L_XH: %0.2f \n", xenH_curr, yenH_curr);
+        // printf("xenH-lean: %0.2f     yen_L_XH: %0.2f \n", xenH_curr, yenH_curr);
 
         // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);

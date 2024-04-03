@@ -1,5 +1,5 @@
-#ifndef _NEOPIXELSHAREDDATASTRUCT_H_
-#define _NEOPIXELSHAREDDATASTRUCT_H_
+#ifndef _SHAREDDATASTRUCT_H_
+#define _SHAREDDATASTRUCT_H_
 
 #include <stdint.h>
 #include <stdbool.h>

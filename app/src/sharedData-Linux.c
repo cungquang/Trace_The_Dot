@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include "../include/sharedData-Linux.h"
 #include "../include/general_helper.h"
-#include "./neoPixelRGBW-Linux.h"
-#include "../../pru-as4/neoPixel/neoPixelSharedDataStruct.h"
+#include "../../pru-as4/sharedDataStruct.h"
 
 //Configure pin for Joystick
 #define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
@@ -183,6 +183,8 @@ void getColor_focusPoint(uint32_t *background, uint32_t *up_color, uint32_t *mid
 void getPosition_focusPoint(float tilt, int *up, int *middle, int *down, float centerUpper, float centerLower)
 {
     /////////////// MOVING UP ///////////////
+
+    //When go up the target go down
     if(tilt > (centerUpper + 0.4))
     {
         *up = 8;
@@ -236,6 +238,8 @@ void getPosition_focusPoint(float tilt, int *up, int *middle, int *down, float c
     }
 
     /////////////// MOVING DOWN /////////////// 
+    
+    //When move down the target go up
     //Moving down -0.35 > tilt >= -0.5
     if(tilt < centerLower && tilt >= (centerLower - 0.1))
     {
