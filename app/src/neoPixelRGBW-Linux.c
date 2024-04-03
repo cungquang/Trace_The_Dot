@@ -130,15 +130,15 @@ void setColor_ithPosition(uint32_t colorValue, int position)
 /////////////////////////////// GETTER ///////////////////////////////
 
 
-void getColor_background(float lean, uint32_t *background)
+void getColor_background(float lean, uint32_t *background, float centerUpper, float centerLower)
 {
     //Lean to the left side - RED 
-    if(lean > 0.15)
+    if(lean > centerUpper)
     {
         *background = RED_COLOR;
     }
     //Lean to the right side - GREEN
-    else if(lean < -0.15) 
+    else if(lean < centerLower) 
     {
         *background = GREEN_COLOR;
     }

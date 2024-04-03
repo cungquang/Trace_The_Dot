@@ -8,14 +8,14 @@
 #define XY_FREQUENCY 100
 
 //LEAN BOUND
-#define LEAN_DEBOUNCE_THRESHOLD 6
-#define LEAN_CENTER_UPPER_BOUND 0.15
-#define LEAN_CENTER_LOWER_BOUND -0.15
+#define LEAN_DEBOUNCE_THRESHOLD 10
+#define LEAN_CENTER_UPPER_BOUND 0.1
+#define LEAN_CENTER_LOWER_BOUND -0.1
 
 //TILT BOUND
-#define TILT_DEBOUNCE_THRESHOLD 4
-#define TILT_CENTER_UPPER_BOUND 0.15
-#define TILT_CENTER_LOWER_BOUND -0.15
+#define TILT_DEBOUNCE_THRESHOLD 3
+#define TILT_CENTER_UPPER_BOUND 0.2
+#define TILT_CENTER_LOWER_BOUND -0.2
 
 //CENTER COLOR
 #define CENTER_COLOR      0x00000f00
@@ -126,7 +126,7 @@ static void* I2cbus1readXYenH_thread()
         yen_L_H[1] = I2cbus1Read_OutYH();
         yenH_curr = I2cbus1_convertToGForce(I2cbus1_getRawData(yen_L_H[0], yen_L_H[1]));
 
-        printf("xenH-lean: %0.2f     xen_L_XL: %d      xen_L_XH: %d \n", xenH_curr, xen_L_H[0], xen_L_H[1]);
+        printf("xenH-lean: %0.2f     yen_L_XH: %0.2f \n", xenH_curr, yenH_curr);
 
         // Critical section
         pthread_mutex_lock(&shared_pipe_mutex);
@@ -138,18 +138,18 @@ static void* I2cbus1readXYenH_thread()
         // Get dot position
         tilt_preventDebounceToCenter(yenH_curr, &dot_up, &dot_middle, &dot_down);
 
-        // Away from center
-        if(isTilt)
+        // at center
+        if(dot_up == 0 && dot_down == 0 && dot_middle == 0)
+        {
+            setColor_background(color_background);
+        }
+        else
         {
             setColor_background(0);
             setColor_ithPosition(color_up, dot_up);
             setColor_ithPosition(color_middle, dot_middle);
             setColor_ithPosition(color_down, dot_down);
         }   
-        else
-        {
-            setColor_background(color_background);
-        }
 
         pthread_mutex_unlock(&shared_pipe_mutex);
 
@@ -175,7 +175,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
     if(isLeaned == 0)
     {
         //Update background color
-        getColor_background(lean_curr, background);
+        getColor_background(lean_curr, background, LEAN_CENTER_UPPER_BOUND, LEAN_CENTER_LOWER_BOUND);
 
         //Change lean status
         if(color_background != CENTER_COLOR)
@@ -196,7 +196,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
             leanDebounce_count = 0;
 
             // Update the latest color
-            getColor_background(lean_curr, background);
+            getColor_background(lean_curr, background, LEAN_CENTER_UPPER_BOUND, LEAN_CENTER_LOWER_BOUND);
         }
 
         // Meet threshold
@@ -205,7 +205,7 @@ static void lean_preventDebounceToCenter(float lean_curr, uint32_t * background)
             isLeaned = 0;
             leanDebounce_count = 0;
             // Update the latest color
-            getColor_background(lean_curr, background);
+            getColor_background(lean_curr, background, LEAN_CENTER_UPPER_BOUND, LEAN_CENTER_LOWER_BOUND);
         }
     }
 }
