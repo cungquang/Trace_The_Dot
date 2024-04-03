@@ -9,6 +9,9 @@
         "joystickshareddatastruct.h": "c",
         "resource_table_empty.h": "c",
         "unistd.h": "c",
-        "pwm_configure.h": "c"
+        "pwm_configure.h": "c",
+        "accelerometer_control.h": "c",
+        "shareddata-linux.h": "c",
+        "stdbool.h": "c"
     }
 }

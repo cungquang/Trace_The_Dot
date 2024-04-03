@@ -7,7 +7,15 @@
 int main(void)
 {
     Pwm_init();
-    Pwm_playHighCNote(500);
+    //Pwm_playHighFNote(150);
+
+    // Pwm_playMiddleCNote(60);
+    // Pwm_playMiddleCNote(60);
+    // Pwm_playLowDNote(150);
+    // Pwm_playLowDNote(60);
+
+
+
     // neoPixel_init();
     // Accelerometer_init();
     // Accelerometer_join();
