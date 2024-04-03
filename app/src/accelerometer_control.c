@@ -67,7 +67,7 @@ static void tilt_preventDebounceToCenter(float tilt_curr, int *dotUp, int *dotMi
 #########################
 */
 
-void I2cbus1Control_init(void)
+void Accelerometer_init(void)
 {
     //Configure bus & register
     I2cbus1_init();
@@ -83,13 +83,13 @@ void I2cbus1Control_init(void)
 }
 
 
-void I2cbus1Control_join(void)
+void Accelerometer_join(void)
 {
     pthread_join(i2cbus1XYenH_id, NULL);
 }
 
 
-void I2cbus1Control_cleanup(void)
+void Accelerometer_cleanup(void)
 {
     xenH_curr = 0;
     yenH_curr = 0;
@@ -98,7 +98,7 @@ void I2cbus1Control_cleanup(void)
     memset(yen_L_H, 0, sizeof(yen_L_H));
 }
 
-void I2cbusControl_terminate(void)
+void Accelerometer_terminate(void)
 {
     isTerminate = 1;
 }
