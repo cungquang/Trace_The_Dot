@@ -97,9 +97,26 @@ void main(void)
         color[6] = pSharedMemStruct->position_7;
         color[7] = pSharedMemStruct->position_8;
 
+        if(pSharedMemStruct->terminate_flag)
+        {
+            shutDown();
+        }
+
         //Send to LED to display
         displayLED(color);      
     }
+}
+
+void shutDown(void)
+{
+    color[0] = 0;
+    color[1] = 0;
+    color[2] = 0;
+    color[3] = 0;
+    color[4] = 0;
+    color[5] = 0;
+    color[6] = 0;
+    color[7] = 0;
 }
 
 void displayLED(uint32_t * color)
