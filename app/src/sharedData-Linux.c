@@ -76,9 +76,14 @@ bool joystickRight_isPressed(void)
 
 /////////////////////////////// SETTER ///////////////////////////////
 
-void setTerminateFlag(void)
+void Pru_setTerminateFlag(void)
 {
     pSharedPru0->terminate_flag = 1;
+}
+
+void Pru_cleanup(void)
+{
+    neo_freePruMmapAddr(pSharedPru0);
 }
 
 void setColor_background(uint32_t colorValue)

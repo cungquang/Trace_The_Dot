@@ -5,12 +5,15 @@
 
 static int isTerminated = 0;
 
+static int joystickDown_count = 0;
+
 static pthread_t sound_playTargetSoundThreadId;
 
-static pthread_mutex_t shared_section_mutex = PTHREAD_MUTEX_INITIALIZER;
+// static pthread_mutex_t shared_section_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 //Iniatiate private
 static void * Joystick_observe();
+static int joystickRight_preventDebounce(int downIsPressed);
 
 /*
 #########################
@@ -26,8 +29,10 @@ void Joystick_init(void)
 
 void Joystick_join(void)
 {
-    pthread_join(Joystick_observe, NULL);
+    pthread_join(sound_playTargetSoundThreadId, NULL);
 }
+
+//Write shutdown function here
 
 /*
 #########################
@@ -40,7 +45,7 @@ static void * Joystick_observe()
     while(isTerminated)
     {
         // Joystick Down is press -> shoot
-        if(joystickDown_isPressed())
+        if(joystickRight_preventDebounce(joystickDown_isPressed()))
         {
             // On target
             if(Accelerometer_aimAtTarget())
@@ -57,10 +62,39 @@ static void * Joystick_observe()
         // Joystick Right is press -> shutdown
         if(joystickRight_isPressed())
         {
+            Pru_setTerminateFlag();
             Accelerometer_terminate();
             Sound_setTerminate();
+            Pru_cleanup();
         }
     }
 
     return NULL;
+}
+
+
+static int joystickRight_preventDebounce(int downIsPressed)
+{
+    // user press down
+    if(downIsPressed)
+    {
+        // Not yet press for the first time
+        if(joystickDown_count == 0)
+        {
+            joystickDown_count = 1;
+            return 1;
+        }
+        // Have pressed before
+        else
+        {
+            joystickDown_count = joystickDown_count + 1 > 2? 2 : joystickDown_count + 1;
+        }
+    }
+    // user NOT press down
+    else
+    {
+        joystickDown_count = 0;
+    }
+
+    return 0;
 }

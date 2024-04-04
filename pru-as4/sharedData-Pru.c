@@ -63,6 +63,8 @@ volatile register uint32_t __R31;
 #define OFFSET              0x200           // Skip 0x100 for Stack, 0x100 for Heap (from makefile)
 #define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
 
+int isTerminated = 0;
+
 volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_USABLE;
 
 //initiate private function
@@ -71,7 +73,7 @@ void displayLED(uint32_t * color);
 void main(void)
 {
     //Start the program
-    pSharedMemStruct->terminate_flag = 0;
+    pSharedMemStruct->terminate_flag = isTerminated;
 
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -79,8 +81,10 @@ void main(void)
     //Init color array
     uint32_t color[STR_LEN];
 
-    while(!pSharedMemStruct->terminate_flag) 
+    while(!isTerminated) 
     {
+        isTerminated = pSharedMemStruct->terminate_flag;
+
         // Down is pressed
         pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) == 0;
         pSharedMemStruct->joystickRight_isPressed = (__R31 & JOYSTICK_RIGHT_MASK) == 0;

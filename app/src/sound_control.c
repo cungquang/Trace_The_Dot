@@ -38,7 +38,7 @@ void Sound_init(void)
 
 void Sound_join(void)
 {
-    pthread_join(&sound_playTargetSoundThreadId, NULL);
+    pthread_join(sound_playTargetSoundThreadId, NULL);
 }
 
 void Sound_cleanup(void)
