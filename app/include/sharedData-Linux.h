@@ -4,11 +4,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-void neoPixel_init(void);
-void neoPixel_cleanup(void);
+void SharedData_init(void);
+void SharedData_cleanup(void);
 
 void Pru_setTerminateFlag(void);
-void Pru_cleanup(void);
 
 void setColor_background(uint32_t colorValue);
 void setColor_ithPosition(uint32_t colorValue, int position);

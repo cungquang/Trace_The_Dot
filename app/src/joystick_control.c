@@ -62,10 +62,10 @@ static void * Joystick_observe()
         // Joystick Right is press -> shutdown
         if(joystickRight_isPressed())
         {
+            isTerminated = 1;
             Pru_setTerminateFlag();
             Accelerometer_terminate();
             Sound_setTerminate();
-            Pru_cleanup();
         }
     }
 

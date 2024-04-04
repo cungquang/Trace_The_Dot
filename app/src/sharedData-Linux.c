@@ -49,7 +49,7 @@ void neo_freePruMmapAddr(volatile void* pPruBase);
 */
 
 
-void neoPixel_init(void)
+void SharedData_init(void)
 {
     runCommand(CONFIGURE_PIN_815);
     runCommand(CONFIGURE_PIN_816);
@@ -59,7 +59,7 @@ void neoPixel_init(void)
     pSharedPru0 = PRU0_MEM_FROM_BASE(pPruBase0);
 }
 
-void neoPixel_cleanup(void)
+void SharedData_cleanup(void)
 {
     neo_freePruMmapAddr(pPruBase0);
 }
@@ -79,11 +79,6 @@ bool joystickRight_isPressed(void)
 void Pru_setTerminateFlag(void)
 {
     pSharedPru0->terminate_flag = 1;
-}
-
-void Pru_cleanup(void)
-{
-    neo_freePruMmapAddr(pSharedPru0);
 }
 
 void setColor_background(uint32_t colorValue)

@@ -1,21 +1,22 @@
 #include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
-#include "../../hal/include/pwm_configure.h"
+#include "../include/sound_control.h"
 #include <stdbool.h>
 
 
 int main(void)
 {
-    Pwm_init();
+    //Initiate SharedData
+    SharedData_init();
 
-    // neoPixel_init();
-    // Accelerometer_init();
-    // Accelerometer_join();
-    // neoPixel_cleanup();
+    // Main operation
+    Joystick_init();
+    Sound_init();
+    Accelerometer_init();
+    Accelerometer_join();
+    Sound_join();
+    Joystick_join();
 
-    // neoPixel_init();
-    // printf("Down is pressed: %d\n", joystickDown_isPressed());
-
-    // printf("Right is pressed: %d\n", joystickRight_isPressed());
-    // neoPixel_cleanup();
+    // Cleanup share data
+    SharedData_cleanup();
 }
