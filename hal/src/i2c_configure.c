@@ -6,22 +6,23 @@
 #define P9_18_STATE_PATH "/sys/devices/platform/ocp/ocp:P9_18_pinmux/state"
 #define P8_11_STATE_PATH "/sys/devices/platform/ocp/ocp:P8_11_pinmux/state"
 
-#define CONFIGURE_PIN_18 "config-pin p9_18 i2c > /dev/null"
-#define CONFIGURE_PIN_17 "config-pin p9_17 i2c > /dev/null"
-#define CONFIGURE_PIN_811 "config-pin P8.11 pruout > /dev/null"
-
+#define CONFIGURE_PIN_918 "config-pin p9_18 i2c"
+#define CONFIGURE_PIN_917 "config-pin p9_17 i2c"
+#define CONFIGURE_PIN_811 "config-pin P8.11 pruout"
+#define CONFIGURE_PIN_812 "config-pin p8_12 pruout"
+#define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
 
 static char buffer[MAX_BUFFER_SIZE];
 
 
 void initI2c_p917(void)
 {
-    runCommand(CONFIGURE_PIN_17);
+    runCommand(CONFIGURE_PIN_917);
 }
 
 void initI2c_p918(void)
 {
-    runCommand(CONFIGURE_PIN_18);
+    runCommand(CONFIGURE_PIN_918);
 }
 
 void initI2c_p811(void)
@@ -29,7 +30,17 @@ void initI2c_p811(void)
     runCommand(CONFIGURE_PIN_811);
 }
 
-int isI2cConfigure_p917()
+void initI2c_p812(void)
+{
+    runCommand(CONFIGURE_PIN_812);
+}
+
+void initI2c_p815(void)
+{
+    runCommand(CONFIGURE_PIN_815);
+}
+
+int isI2cConfigure_p917(void)
 {
     memset(buffer, 0, sizeof(buffer));
     readFromFileToBuffer(P9_17_STATE_PATH, buffer, sizeof(buffer));
@@ -41,7 +52,7 @@ int isI2cConfigure_p917()
     return 0;
 }
 
-int isI2cConfigure_p918()
+int isI2cConfigure_p918(void)
 {
     memset(buffer, 0, sizeof(buffer));
     readFromFileToBuffer(P9_18_STATE_PATH, buffer, sizeof(buffer));

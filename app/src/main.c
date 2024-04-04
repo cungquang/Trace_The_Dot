@@ -28,14 +28,20 @@ void operation(void)
 int main(void)
 {
     I2cbus1_init();
-    I2cbus1_enableRightDigit();
+    
+    //Turn off both digit
+    I2cbus1_disableRightDigit();
+    I2cbus1_disableLeftDigit();    
+
+    //Write left 
+    I2cbus1Write_No8();
     I2cbus1_enableLeftDigit();
-    while(true)
-    {
-        I2cbus1Write_No8();
-        sleepForMs(100);
-        I2cbus1Write_No9();
-        sleepForMs(100);
-    }
+    sleepForMs(5);
+
+    //Write right
+    I2cbus1Write_No9();
+    I2cbus1_enableRightDigit();
+    sleepForMs(5);
+
     //operation();
 }

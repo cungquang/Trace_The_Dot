@@ -92,6 +92,12 @@ void I2cbus1_init()
         initI2c_p811();
     }
 
+    //Pin8_12
+    initI2c_p812();
+    
+    //Pin8_15
+    initI2c_p815();
+
     //Write out into Directory
     I2cbus1Write_outDir();
 }
@@ -130,7 +136,6 @@ void I2cbus1_disableLeftDigit(void)
 
 void I2cbus1Write_No0(void)
 {
-    I2cbus1Write_outDir();
     writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_0);
     writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_0);
 }
@@ -179,8 +184,8 @@ void I2cbus1Write_No7(void)
 
 void I2cbus1Write_No8(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, 0xd8);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, 0xa3);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_8);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_8);
 }
 
 void I2cbus1Write_No9(void)
