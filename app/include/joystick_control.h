@@ -5,5 +5,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
+void Joystick_init(void);
+void Joystick_join(void);
 
 #endif
