@@ -12,5 +12,6 @@ void Accelerometer_init(void);
 void Accelerometer_join(void);
 void Accelerometer_cleanup(void);
 void Accelerometer_terminate(void);
+int Accelerometer_aimAtTarget(void);
 
 #endif

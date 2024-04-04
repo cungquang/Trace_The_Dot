@@ -6,14 +6,13 @@
 static int isTerminate = 0;
 
 //Status to trigger play sound
-static int playHitTarget = 0;
-static int playMissTarget = 0;
+static int playHitOrMiss = 0;
 
 //Threads
 static pthread_t sound_playTargetSoundThreadId;
 
 //Mutex
-static pthread_mutex_t shared_pipe_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t shared_section_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 //Initiate private function
@@ -42,19 +41,21 @@ void Sound_join(void)
     pthread_join(&sound_playTargetSoundThreadId, NULL);
 }
 
+void Sound_cleanup(void)
+{
+    playHitOrMiss = 0;
+}
+
 void Sound_setTerminate(void)
 {
     isTerminate = 1;
 }
 
-void Sound_setPlayHitTarget(void)
+void Sound_setPlayHitOrMiss(int hitOrMiss)
 {
-    playHitTarget = 1;
-}
-
-void Sound_setPlayMissTarget(void)
-{
-    playMissTarget = 1;
+    pthread_mutex_lock(&shared_section_mutex);
+    playHitOrMiss = hitOrMiss;
+    pthread_mutex_unlock(&shared_section_mutex);
 }
 
 /*
@@ -67,19 +68,21 @@ static void * Sound_playTargetSound()
 {
     while(!isTerminate)
     {
-        if(playHitTarget)
+        pthread_mutex_lock(&shared_section_mutex);
+        if(playHitOrMiss == 1)
         {
             Sound_playHitTarget();
-            playHitTarget = 0;
+            playHitOrMiss = 0;
         }
-        else if(playMissTarget)
+        else if(playHitOrMiss == 2)
         {
             Sound_playMissTarget();
-            playMissTarget = 0;
+            playHitOrMiss = 0;
         }
+        pthread_mutex_unlock(&shared_section_mutex);
 
         // Delay before recheck
-        sleepForMs(200);
+        sleepForMs(10);
     }
 
     return NULL;

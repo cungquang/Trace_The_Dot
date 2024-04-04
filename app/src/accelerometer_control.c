@@ -103,6 +103,19 @@ void Accelerometer_terminate(void)
     isTerminate = 1;
 }
 
+int Accelerometer_aimAtTarget(void)
+{
+    int onTarget = 0;
+
+    pthread_mutex_lock(&shared_pipe_mutex);
+    if(isLeaned == 0 && dot_up == 0 && dot_middle == 0 && dot_down == 0)
+    {
+        onTarget = 1;
+    }
+    pthread_mutex_unlock(&shared_pipe_mutex);
+
+    return onTarget;
+}
 
 /*
 #########################
