@@ -26,5 +26,5 @@ void operation(void)
 
 int main(void)
 {
-    
+    operation();
 }
