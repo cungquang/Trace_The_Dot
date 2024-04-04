@@ -1,5 +1,6 @@
 #include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
+#include "../include/joystick_control.h"
 #include "../include/sound_control.h"
 #include <stdbool.h>
 
