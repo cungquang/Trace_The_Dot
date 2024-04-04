@@ -88,7 +88,7 @@ void main(void)
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     //Init color array
-    int delayInMs = 1000;
+    int delayInMs = 500;
     uint32_t color[STR_LEN];
 
     while(!isTerminated) 
@@ -120,11 +120,7 @@ void main(void)
         displayLED(color);      
 
         //Display digit
-        flashOn(delayInMs, 500);
-        delayInMs /= 2;
-        if (delayInMs == 0) {
-            delayInMs = 1000;
-        }
+        flashOn(delayInMs, 150);
     }
 }
 
@@ -166,7 +162,7 @@ void displayLED(uint32_t * color)
     __delay_cycles(resetCycles);
 
     // Wait between update
-    __delay_cycles(SPEED);
+    // __delay_cycles(SPEED);
 }
 
 
@@ -181,7 +177,7 @@ void delay(unsigned int delayInMs)
 void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs) 
 {
     __R30 |= DIGIT_ON_OFF_MASK;
-    delay(delayOnInMs);
+    delay(delayOffInMs);
 
     __R30 &= ~DIGIT_ON_OFF_MASK;
     delay(delayOffInMs);

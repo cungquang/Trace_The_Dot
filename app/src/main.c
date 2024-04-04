@@ -26,5 +26,6 @@ void operation(void)
 
 int main(void)
 {
+    I2cbus1Write_No0();
     operation();
 }
