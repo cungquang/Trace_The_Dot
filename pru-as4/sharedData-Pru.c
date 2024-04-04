@@ -45,7 +45,7 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-// P8_12 for input (on R30) - 14-Seg Display 
+// P8_12 for input (on R30) - Right 14-Seg Display 
 #define DIGIT_ON_OFF_MASK (1 << 14)
 
 // P8_11 for output (on R30), PRU0
@@ -63,13 +63,20 @@ volatile register uint32_t __R31;
 #define OFFSET              0x200           // Skip 0x100 for Stack, 0x100 for Heap (from makefile)
 #define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
 
+// 200 Mhz clock
+#define DELAY_100_MS 20000000
+
+// Manage operation
 int isTerminated = 0;
 
+// Share struct variable 
 volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_USABLE;
 
 //initiate private function
 void displayLED(uint32_t * color);
 void shutDown(uint32_t * color);
+void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs);
+void delay(unsigned int delayInMs);
 
 
 void main(void)
@@ -110,6 +117,13 @@ void main(void)
 
         //Send to LED to display
         displayLED(color);      
+
+        //Display digit
+        flashOn(delayInMs, 500);
+        delayInMs /= 2;
+        if (delayInMs == 0) {
+            delayInMs = 1000;
+        }
     }
 }
 
@@ -154,3 +168,20 @@ void displayLED(uint32_t * color)
     __delay_cycles(SPEED);
 }
 
+
+void delay(unsigned int delayInMs)
+{
+    // __delay_cycles needs a constant
+    for (int i = 0; i < delayInMs; i += 100) {
+        __delay_cycles(DELAY_100_MS);
+    }
+}
+
+void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs) 
+{
+    __R30 |= DIGIT_ON_OFF_MASK;
+    delay(delayOnInMs);
+
+    __R30 &= ~DIGIT_ON_OFF_MASK;
+    delay(delayOffInMs);
+}

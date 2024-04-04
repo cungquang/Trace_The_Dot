@@ -7,6 +7,8 @@ static int isTerminated = 0;
 
 static int joystickDown_count = 0;
 
+static long onTarget_count = 0;
+
 static pthread_t sound_playTargetSoundThreadId;
 
 // static pthread_mutex_t shared_section_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -32,7 +34,10 @@ void Joystick_join(void)
     pthread_join(sound_playTargetSoundThreadId, NULL);
 }
 
-//Write shutdown function here
+long Joystick_getOnTarget(void)
+{
+    return onTarget_count;
+}
 
 /*
 #########################
@@ -50,6 +55,7 @@ static void * Joystick_observe()
             // On target
             if(Accelerometer_aimAtTarget())
             {
+                onTarget_count++;
                 Sound_setPlayHitOrMiss(1);
             }
             // Miss target

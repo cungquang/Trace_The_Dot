@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 
-int main(void)
+void operation(void)
 {
     //Initiate SharedData
     SharedData_init();
@@ -14,10 +14,17 @@ int main(void)
     Joystick_init();
     Sound_init();
     Accelerometer_init();
+
+    //Join
     Accelerometer_join();
     Sound_join();
     Joystick_join();
 
     // Cleanup share data
     SharedData_cleanup();
+}
+
+int main(void)
+{
+    
 }
