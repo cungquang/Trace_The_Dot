@@ -70,13 +70,16 @@ void displayLED(uint32_t * color);
 
 void main(void)
 {
+    //Start the program
+    pSharedMemStruct->terminate_flag = 0;
+
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     //Init color array
     uint32_t color[STR_LEN];
 
-    while(1) 
+    while(!pSharedMemStruct->terminate_flag) 
     {
         // Down is pressed
         pSharedMemStruct->joystickDown_isPressed = (__R31 & JOYSTICK_DOWN_MASK) == 0;
