@@ -5,14 +5,18 @@
 #define I2CDRV_LINUX_BUS2 "/dev/i2c-2"
 
 //14 Segments digits
-#define I2C_DEVICE_ADDRESS_DIGIT 0x20
+#define ENABLE_61 "echo 1 > /sys/class/gpio/gpio61/value"
+#define DISABLE_61 "echo 0 > /sys/class/gpio/gpio61/value"
 
+#define ENABLE_44 "echo 1 > /sys/class/gpio/gpio44/value"
+#define DISABLE_44 "echo 0 > /sys/class/gpio/gpio44/value"
+
+#define I2C_DEVICE_ADDRESS_DIGIT 0x20
 
 #define REG_DIRA 0x02
 #define REG_DIRB 0x03
 #define REG_OUTA 0x00
 #define REG_OUTB 0x01
-
 
 //Register address & value for each number display from 0 - 9
 #define OXOO_0 0xd0
@@ -55,7 +59,6 @@ static int i2c1_FileDesc_Accelerometer;
 void I2cbus1Write_outDir(void);
 
 
-
 /*
 #########################
 #        PUBLIC         #
@@ -93,33 +96,36 @@ void I2cbus1_init()
     I2cbus1Write_outDir();
 }
 
-int I2c1FileDescDigit_get(void)
+void I2c1FileDescDigit_close(void)
 {
-    return i2c1_FileDesc_Digits;
+    close(i2c1_FileDesc_Digits);
 }
 
-int I2c1FileDescAccelerometer_get(void)
+void I2c1FileDescAccelerometer_close(void)
 {
-    return i2c1_FileDesc_Accelerometer;
+    close(i2c1_FileDesc_Accelerometer);
 }
-
-void I2c1FileDescDigit_set(int newI2c1FileDesc)
-{
-    i2c1_FileDesc_Digits = newI2c1FileDesc;
-}
-
-void I2c1FileDescAccelerometer_set(int newI2c1FileDesc)
-{
-    i2c1_FileDesc_Accelerometer = newI2c1FileDesc;
-}
-
-
 
 ///////////////////////// WRITE 14 SEGMENTS OPERATION /////////////////////////
 
-void I2cbus1Enable_leftDigit(void)
+void I2cbus1_enableRightDigit(void)
 {
-    runCommand()
+    runCommand(ENABLE_61);
+}
+
+void I2cbus1_disableRightDigit(void)
+{
+    runCommand(DISABLE_61);
+}
+
+void I2cbus1_enableLeftDigit(void)
+{
+    runCommand(ENABLE_44);
+}
+
+void I2cbus1_disableLeftDigit(void)
+{
+    runCommand(DISABLE_44);
 }
 
 void I2cbus1Write_No0(void)

@@ -10,12 +10,18 @@
 #include <linux/i2c-dev.h>
 #include "./i2c_configure.h"
 
+
 //Init opeartion
 void I2cbus1_init();
-int I2c1FileDescDigit_get(void);
-int I2c1FileDescAccelerometer_get(void);
-void I2c1FileDescDigit_set(int newI2c1FileDesc);
-void I2c1FileDescAccelerometer_set(int newI2c1FileDesc);
+void I2c1FileDescDigit_close(void);
+void I2c1FileDescAccelerometer_close(void);
+
+
+//Enable/Disable 14 segment Left/right digits
+void I2cbus1_enableRightDigit(void);
+void I2cbus1_disableRightDigit(void);
+void I2cbus1_enableLeftDigit(void);
+void I2cbus1_disableLeftDigit(void);
 
 
 //Write 14 segments digits
