@@ -88,6 +88,7 @@ void main(void)
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     //Init color array
+    int delayInMs = 1000;
     uint32_t color[STR_LEN];
 
     while(!isTerminated) 
