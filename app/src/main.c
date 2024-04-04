@@ -2,6 +2,7 @@
 #include "../include/sharedData-Linux.h"
 #include "../include/joystick_control.h"
 #include "../include/sound_control.h"
+#include "../../hal/include/register_configure.h"
 #include <stdbool.h>
 
 
@@ -26,6 +27,5 @@ void operation(void)
 
 int main(void)
 {
-    I2cbus1Write_No0();
-    operation();
+    //operation();
 }

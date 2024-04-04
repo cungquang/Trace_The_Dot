@@ -26,14 +26,14 @@
 #define OXO1_4 0xe2
 #define OXOO_5 0x58
 #define OXO1_5 0x23
-#define OXOO_6 0xd8
-#define OXO1_6 0x23
+#define OXOO_6 0x58
+#define OXO1_6 0xa3
 #define OXOO_7 0x10
 #define OXO1_7 0xe2
 #define OXOO_8 0xd8
 #define OXO1_8 0xa3
-#define OXOO_9 0x58
-#define OXO1_9 0xa3
+#define OXOO_9 0xd8
+#define OXO1_9 0x23
 
 //Accelerometer
 #define I2C_DEVICE_ADDRESS_ACC 0x18
@@ -109,65 +109,73 @@ void I2c1FileDescAccelerometer_set(int newI2c1FileDesc)
 
 ///////////////////////// WRITE 14 SEGMENTS OPERATION /////////////////////////
 
+void I2cbus1Write_outDir(void)
+{
+    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, 0x00);
+	writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, 0x00);
+
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, 0x2A);
+	writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, 0x54);
+}
 
 void I2cbus1Write_No0(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_0);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_0);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_0);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_0);
 }
 
 void I2cbus1Write_No1(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_1);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_1);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_1);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_1);
 }
 
 void I2cbus1Write_No2(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_2);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_2);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_2);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_2);
 }
 
 void I2cbus1Write_No3(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_3);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_3);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_3);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_3);
 }
 
 void I2cbus1Write_No4(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_4);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_4);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_4);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_4);
 }
 
 void I2cbus1Write_No5(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_5);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_5);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_5);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_5);
 }
 
 void I2cbus1Write_No6(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_6);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_6);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_6);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_6);
 }
 
 void I2cbus1Write_No7(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_7);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_7);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_7);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_7);
 }
 
 void I2cbus1Write_No8(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_8);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_8);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, 0xd8);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, 0xa3);
 }
 
 void I2cbus1Write_No9(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, OXOO_9);
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, OXO1_9);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_9);
+    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_9);
 }
 
 

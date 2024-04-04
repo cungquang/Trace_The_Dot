@@ -12,8 +12,10 @@
 
 //Init opeartion
 void I2cbus1_init();
-int I2c1FileDesc_get();
-void I2c1FileDesc_set(int newI2c1FileDesc);
+int I2c1FileDescDigit_get(void);
+int I2c1FileDescAccelerometer_get(void);
+void I2c1FileDescDigit_set(int newI2c1FileDesc);
+void I2c1FileDescAccelerometer_set(int newI2c1FileDesc);
 
 
 //Write 14 segments digits
