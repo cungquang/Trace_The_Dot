@@ -69,6 +69,8 @@ volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_US
 
 //initiate private function
 void displayLED(uint32_t * color);
+void shutDown(uint32_t * color);
+
 
 void main(void)
 {
@@ -103,7 +105,7 @@ void main(void)
 
         if(pSharedMemStruct->terminate_flag)
         {
-            shutDown();
+            shutDown(color);
         }
 
         //Send to LED to display
@@ -111,7 +113,7 @@ void main(void)
     }
 }
 
-void shutDown(void)
+void shutDown(uint32_t *color)
 {
     color[0] = 0;
     color[1] = 0;

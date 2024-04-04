@@ -42,9 +42,9 @@ void Joystick_join(void)
 
 static void * Joystick_observe()
 {
-    while(isTerminated)
+    while(!isTerminated)
     {
-        // Joystick Down is press -> shoot
+
         if(joystickRight_preventDebounce(joystickDown_isPressed()))
         {
             // On target
@@ -60,7 +60,7 @@ static void * Joystick_observe()
         }
         
         // Joystick Right is press -> shutdown
-        if(joystickRight_isPressed())
+        if(joystickRight_preventDebounce(joystickRight_isPressed()))
         {
             isTerminated = 1;
             Pru_setTerminateFlag();
