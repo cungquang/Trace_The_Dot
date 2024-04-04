@@ -3,11 +3,11 @@
 #include "../../hal/include/pwm_configure.h"
 
 //Control operation
-static int isTerminate;
+static int isTerminate = 0;
 
 //Status to trigger play sound
-static int playHitTarget;
-static int playMissTarget;
+static int playHitTarget = 0;
+static int playMissTarget = 0;
 
 //Threads
 static pthread_t sound_playTargetSoundThreadId;
@@ -45,6 +45,16 @@ void Sound_join(void)
 void Sound_setTerminate(void)
 {
     isTerminate = 1;
+}
+
+void Sound_setPlayHitTarget(void)
+{
+    playHitTarget = 1;
+}
+
+void Sound_setPlayMissTarget(void)
+{
+    playMissTarget = 1;
 }
 
 /*
