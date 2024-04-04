@@ -19,8 +19,8 @@ void I2c1FileDescAccelerometer_close(void);
 
 //Enable/Disable 14 segment Left/right digits
 void I2cbus1_enableRightDigit(void);
-void I2cbus1_disableRightDigit(void);
 void I2cbus1_enableLeftDigit(void);
+void I2cbus1_disableRightDigit(void);
 void I2cbus1_disableLeftDigit(void);
 
 

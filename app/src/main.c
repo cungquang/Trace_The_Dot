@@ -28,6 +28,8 @@ void operation(void)
 int main(void)
 {
     I2cbus1_init();
+    I2cbus1_enableRightDigit();
+    I2cbus1_enableLeftDigit();
     while(true)
     {
         I2cbus1Write_No8();
