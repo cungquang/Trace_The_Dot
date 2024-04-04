@@ -27,5 +27,13 @@ void operation(void)
 
 int main(void)
 {
+    I2cbus1_init();
+    while(true)
+    {
+        I2cbus1Write_No8();
+        sleepForMs(100);
+        I2cbus1Write_No9();
+        sleepForMs(100);
+    }
     //operation();
 }

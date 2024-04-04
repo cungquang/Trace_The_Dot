@@ -7,29 +7,30 @@
 //14 Segments digits
 #define I2C_DEVICE_ADDRESS_DIGIT 0x20
 
-#define REG_DIRA 0x00
-#define REG_DIRB 0x01
-#define REG_OUTA 0x14
-#define REG_OUTB 0x15
+
+#define REG_DIRA 0x02
+#define REG_DIRB 0x03
+#define REG_OUTA 0x00
+#define REG_OUTB 0x01
 
 
 //Register address & value for each number display from 0 - 9
 #define OXOO_0 0xd0
 #define OXO1_0 0xa1
-#define OXOO_1 0x00
-#define OXO1_1 0xe0
+#define OXOO_1 0xc0
+#define OXO1_1 0x00
 #define OXOO_2 0x98
 #define OXO1_2 0x83
 #define OXOO_3 0x18
 #define OXO1_3 0xa3
-#define OXOO_4 0x48
-#define OXO1_4 0xe2
+#define OXOO_4 0x22
+#define OXO1_4 0xc8
 #define OXOO_5 0x58
 #define OXO1_5 0x23
 #define OXOO_6 0x58
 #define OXO1_6 0xa3
-#define OXOO_7 0x10
-#define OXO1_7 0xe2
+#define OXOO_7 0xc8
+#define OXO1_7 0x01
 #define OXOO_8 0xd8
 #define OXO1_8 0xa3
 #define OXOO_9 0xd8
@@ -49,6 +50,10 @@
 //File description
 static int i2c1_FileDesc_Digits;
 static int i2c1_FileDesc_Accelerometer;
+
+//Initiate private
+void I2cbus1Write_outDir(void);
+
 
 
 /*
@@ -83,6 +88,9 @@ void I2cbus1_init()
     {
         initI2c_p811();
     }
+
+    //Write out into Directory
+    I2cbus1Write_outDir();
 }
 
 int I2c1FileDescDigit_get(void)
@@ -109,17 +117,14 @@ void I2c1FileDescAccelerometer_set(int newI2c1FileDesc)
 
 ///////////////////////// WRITE 14 SEGMENTS OPERATION /////////////////////////
 
-void I2cbus1Write_outDir(void)
+void I2cbus1Enable_leftDigit(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, 0x00);
-	writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, 0x00);
-
-    writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, 0x2A);
-	writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, 0x54);
+    runCommand()
 }
 
 void I2cbus1Write_No0(void)
 {
+    I2cbus1Write_outDir();
     writeI2cReg(i2c1_FileDesc_Digits, REG_OUTA, OXOO_0);
     writeI2cReg(i2c1_FileDesc_Digits, REG_OUTB, OXO1_0);
 }
@@ -284,3 +289,10 @@ unsigned char I2cbus1Read_OutZH()
 #       PRIVATE         #
 #########################
 */
+
+
+void I2cbus1Write_outDir(void)
+{
+    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, 0x00);
+	writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, 0x00);
+}
