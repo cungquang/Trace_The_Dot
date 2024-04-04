@@ -115,9 +115,6 @@ void I2cbus1Write_Reg1(unsigned char value)
 ///////////////////////// WRITE 14 SEGMENTS OPERATION /////////////////////////
 
 
-void I2cbus1Write_
-
-
 void I2cbus1Write_No0(void)
 {
     writeI2cReg(i2c1_FileDesc, REG_DIRA, OXOO_0);
