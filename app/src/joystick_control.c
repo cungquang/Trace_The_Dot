@@ -58,15 +58,18 @@ static void * Joystick_observe()
 {
     while(!isTerminated)
     {
-        
+        // User press fire
         if(joystickRight_preventDebounce(joystickDown_isPressed()))
         {
             // On target
             if(Accelerometer_aimAtTarget())
             {
-                Sound_setPlayHitOrMiss(1);
-                Joystick_setOnTarget();
-                Digits_setValueToDisplay(onTarget_count);
+                if(status_curr == 1 && status_count <= 1)
+                {
+                    Sound_setPlayHitOrMiss(1);
+                    Joystick_setOnTarget();
+                    Digits_setValueToDisplay(onTarget_count);
+                }
             }
             // Miss target
             else
@@ -106,9 +109,11 @@ static int joystickRight_preventDebounce(int downIsPressed)
     else if (status_curr == 1 && downIsPressed == 1)
     {
         status_count++;
+        status_count = status_count > MULTIPLE_CLICK_BOUND? MULTIPLE_CLICK_BOUND : status_count;
 
         //Stop bounce back accumulate - must be continuous
         bounceBack_toZero = 0;
+        return 1;
     }
     else if (status_curr == 1 && downIsPressed == 0)
     {

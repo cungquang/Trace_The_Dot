@@ -1,8 +1,8 @@
+#include "../../hal/include/register_configure.h"
 #include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
 #include "../include/joystick_control.h"
 #include "../include/sound_control.h"
-#include "../../hal/include/register_configure.h"
 #include "../include/digits_control.h"
 
 
