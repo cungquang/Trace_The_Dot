@@ -1,6 +1,7 @@
 #include "../include/general_helper.h"
 #include "../include/sound_control.h"
 #include "../../hal/include/pwm_configure.h"
+#include "../include/joystick_control.h"
 
 //Control operation
 static int isTerminate = 0;
@@ -73,6 +74,7 @@ static void * Sound_playTargetSound()
         {
             Sound_playHitTarget();
             playHitOrMiss = 0;
+            Joystick_setOnTarget();
         }
         else if(playHitOrMiss == 2)
         {
@@ -80,9 +82,6 @@ static void * Sound_playTargetSound()
             playHitOrMiss = 0;
         }
         pthread_mutex_unlock(&shared_section_mutex);
-
-        // Delay before recheck
-        sleepForMs(10);
     }
 
     return NULL;
@@ -90,8 +89,7 @@ static void * Sound_playTargetSound()
 
 static void Sound_playHitTarget(void)
 {
-    Pwm_playHighFNote(150);
-    Pwm_playHighANote(50);
+    Pwm_playHighFNote(70);
     Pwm_playHighANote(50);
     Pwm_playHighENote(30);
 }

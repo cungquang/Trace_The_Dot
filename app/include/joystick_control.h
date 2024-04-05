@@ -8,4 +8,6 @@
 void Joystick_init(void);
 void Joystick_join(void);
 
+void Joystick_setOnTarget(void);
+
 #endif

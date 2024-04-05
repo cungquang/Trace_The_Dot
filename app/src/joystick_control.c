@@ -8,6 +8,7 @@
 static int isTerminated = 0;
 
 //Hit
+// static int previousPress = 0;
 static int joystickDown_count = 0;
 static long onTarget_count = 0;
 
@@ -37,9 +38,9 @@ void Joystick_join(void)
     pthread_join(sound_playTargetSoundThreadId, NULL);
 }
 
-long Joystick_getOnTarget(void)
+void Joystick_setOnTarget(void)
 {
-    return onTarget_count;
+    onTarget_count++;
 }
 
 /*
@@ -58,9 +59,8 @@ static void * Joystick_observe()
             // On target
             if(Accelerometer_aimAtTarget())
             {
-                onTarget_count++;
-                printf("shoot on target: %ld\n", onTarget_count);
                 Sound_setPlayHitOrMiss(1);
+                // printf("shoot on target: %ld\n", onTarget_count);
                 Digits_setValueToDisplay(onTarget_count);
             }
             // Miss target
