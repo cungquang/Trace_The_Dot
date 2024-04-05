@@ -11,7 +11,7 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_NAME   =$(CURRENT_DIR)
 LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 LIBS        =--library=$(PRU_CGT)/lib/rpmsg_lib.lib
-INCLUDE     =--include_path=$(PRU_CGT)/include --include_path=$(PRU_CGT)/include/am335x --include_path=/usr/share/ti/cgt-pru/include
+INCLUDE     =--include_path=$(PRU_CGT)/include --include_path=$(PRU_CGT)/include/am335x --include_path=/usr/share/ti/cgt-pru/include --include_path=/usr/include --include_path=/usr/include/arm-linux-gnueabihf --include_path=/usr/include/arm-linux-gnueabihf/sys
 STACK_SIZE  =0x100
 HEAP_SIZE   =0x100
 GEN_DIR     =gen

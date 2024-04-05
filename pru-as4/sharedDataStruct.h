@@ -17,8 +17,6 @@ typedef struct {
     bool joystickDown_isPressed;
     bool joystickRight_isPressed;
     uint8_t terminate_flag;
-    uint8_t canWrite;
-    uint8_t canTurn;
     _Alignas(4) uint32_t position_1;
     _Alignas(4) uint32_t position_2;
     _Alignas(4) uint32_t position_3;

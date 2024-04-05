@@ -8,8 +8,6 @@ void SharedData_init(void);
 void SharedData_cleanup(void);
 
 void Pru_setTerminateFlag(void);
-int digitSegment_getCanWrite(void);
-int digitSegment_setCanTurn(void);
 
 void setColor_background(uint32_t colorValue);
 void setColor_ithPosition(uint32_t colorValue, int position);

@@ -45,9 +45,6 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-// P8_12 for input (on R30) - Right 14-Seg Display 
-#define DIGIT_ON_OFF_MASK (1 << 14)
-
 // P8_11 for output (on R30), PRU0
 #define DATA_PIN 15                             // Bit number to output one
 
@@ -75,8 +72,13 @@ volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_US
 //initiate private function
 void displayLED(uint32_t * color);
 void shutDown(uint32_t * color);
-void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs);
-void delay(unsigned int delayInMs);
+
+/*
+#########################
+#        PUBLIC         #
+#########################
+*/
+
 
 void main(void)
 {
@@ -87,7 +89,6 @@ void main(void)
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     //Init color array
-    int delayInMs = 500;
     uint32_t color[STR_LEN];
 
     while(!isTerminated) 
@@ -117,11 +118,15 @@ void main(void)
 
         //Send to LED to display
         displayLED(color);      
-
-        //Display digit
-        flashOn(delayInMs, 100);
     }
 }
+
+
+/*
+#########################
+#        PRIVATE        #
+#########################
+*/
 
 void shutDown(uint32_t *color)
 {
@@ -161,45 +166,5 @@ void displayLED(uint32_t * color)
     __delay_cycles(resetCycles);
 
     // Wait between update
-    // __delay_cycles(SPEED);
-}
-
-
-void delay(unsigned int delayInMs)
-{
-    // __delay_cycles needs a constant
-    for (int i = 0; i < delayInMs; i += 100) {
-        __delay_cycles(DELAY_100_MS);
-    }
-}
-
-void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs, volatile sharedMemStruct_t *pSharedMem) 
-{
-    //Turn off
-    __R30 &= ~DIGIT_ON_OFF_MASK;
-    pSharedMem->canWrite = 1;
-
-    //Wait for finish writing
-    while(!pSharedMem->canTurn)
-    {
-        delay(1);
-    }
-
-    //Turn on
-    __R30 |= DIGIT_ON_OFF_MASK;    
-    delay(delayOffInMs);
-
-    //Turn off
-    __R30 &= ~DIGIT_ON_OFF_MASK;
-    pSharedMem->canWrite = 1;
-
-    //Wait for finish writing
-    while(!pSharedMem->canTurn)
-    {
-        delay(1);
-    }
-
-    //Turn on
-    __R30 |= DIGIT_ON_OFF_MASK;  
-    delay(delayOffInMs);
+    __delay_cycles(SPEED);
 }
