@@ -90,9 +90,9 @@ static void Sound_playHitTarget(void)
 {
     Pwm_playHighFNote(250);
     Pwm_playHighANote(50);
-    Pwm_playHighANote(50);
-    Pwm_playHighBNote(50);
     Pwm_playHighENote(50);
+    Pwm_playHighBNote(50);
+    Pwm_playHighANote(50);
     Pwm_playHighENote(20);
     Pwm_playHighENote(20);
     Pwm_playHighENote(10);
