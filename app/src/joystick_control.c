@@ -2,6 +2,7 @@
 #include "../include/accelerometer_control.h"
 #include "../include/sharedData-Linux.h"
 #include "../include/sound_control.h"
+#include "../include/digits_control.h"
 
 static int isTerminated = 0;
 
@@ -57,6 +58,7 @@ static void * Joystick_observe()
             {
                 onTarget_count++;
                 Sound_setPlayHitOrMiss(1);
+                Digits_setValueToDisplay(onTarget_count);
             }
             // Miss target
             else

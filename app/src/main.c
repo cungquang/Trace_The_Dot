@@ -9,14 +9,17 @@
 void operation(void)
 {
     //Initiate SharedData
+    I2cbus1_init();
     SharedData_init();
-
+    
     // Main operation
     Joystick_init();
     Sound_init();
     Accelerometer_init();
+    Digits_init();
 
     //Join
+    Digits_join();
     Accelerometer_join();
     Sound_join();
     Joystick_join();
@@ -27,11 +30,8 @@ void operation(void)
 
 int main(void)
 {
-    I2cbus1_init();
-    Digits_setValueToDisplay(21);
     
-    Digits_init();
-    Digits_join();
+
     
 
     //operation();

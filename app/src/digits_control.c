@@ -2,12 +2,12 @@
 
 #define SWITCH_TIME 5
 
-static int isTerminated;
+static int isTerminated = 0;
 
 //Resources
-static int points_count;
-static int point_leftDigit;
-static int point_rightDigit;
+static int points_count = 0;
+static int point_leftDigit = 0;
+static int point_rightDigit = 0;
 
 //Threads
 static pthread_t digit_displayThreadId;
@@ -66,14 +66,12 @@ void Digits_setValueToDisplay(int displayValue)
         
         point_leftDigit = number[0] - '0';
         point_rightDigit = number[1] - '0';
-        printf("left_digit: %d   right_digit: %d\n", point_leftDigit, point_rightDigit);
     } else{
         char number[2];
         snprintf(number, sizeof(number), "%d", points_count);
 
         point_leftDigit = 0;
         point_rightDigit = number[0] - '0';
-        // printf("left_digit: %d   right_digit: %d\n", point_leftDigit, point_rightDigit);
     }    
 }
 
