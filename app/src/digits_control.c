@@ -1,6 +1,6 @@
 #include "../include/digits_control.h"
 
-#define SWITCH_TIME 1
+#define SWITCH_TIME 5
 
 static int isTerminated;
 
@@ -39,8 +39,8 @@ void Digits_join(void)
 void Digits_cleanUp(void)
 {
     //turn off both digits
-    I2cbus1_disableRightDigit();
     I2cbus1_disableLeftDigit();
+    I2cbus1_disableRightDigit();
 }
 
 void Digits_setTerminated(void)
@@ -95,7 +95,7 @@ static void *Digits_displayThread()
 
         //display pattern for left digit
         Digits_selectPattern(point_leftDigit);
-        I2cbus1_enableRightDigit();
+        I2cbus1_enableLeftDigit();
         sleepForMs(SWITCH_TIME);
 
         //turn off both digits
@@ -104,7 +104,7 @@ static void *Digits_displayThread()
 
         //display pattern for right digit
         Digits_selectPattern(point_rightDigit);
-        I2cbus1_enableLeftDigit();
+        I2cbus1_enableRightDigit();
         sleepForMs(SWITCH_TIME);
     }
 

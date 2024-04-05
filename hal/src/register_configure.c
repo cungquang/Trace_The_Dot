@@ -119,24 +119,24 @@ void I2c1FileDescAccelerometer_close(void)
 
 ///////////////////////// WRITE 14 SEGMENTS OPERATION /////////////////////////
 
-void I2cbus1_enableRightDigit(void)
-{
-    system(ENABLE_61);
-}
-
-void I2cbus1_disableRightDigit(void)
-{
-    system(DISABLE_61);
-}
-
 void I2cbus1_enableLeftDigit(void)
 {
-    system(ENABLE_44);
+    runCommand(ENABLE_61);
 }
 
 void I2cbus1_disableLeftDigit(void)
 {
-    system(DISABLE_44);
+    runCommand(DISABLE_61);
+}
+
+void I2cbus1_enableRightDigit(void)
+{
+    runCommand(ENABLE_44);
+}
+
+void I2cbus1_disableRightDigit(void)
+{
+    runCommand(DISABLE_44);
 }
 
 void I2cbus1Write_No0(void)
