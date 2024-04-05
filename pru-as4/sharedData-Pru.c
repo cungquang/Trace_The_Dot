@@ -61,7 +61,7 @@ volatile register uint32_t __R31;
 #define THIS_PRU_DRAM_USABLE (THIS_PRU_DRAM + OFFSET)
 
 // 200 Mhz clock
-#define DELAY_100_MS 10000000
+#define DELAY_100_MS 5000000
 
 // Manage operation
 int isTerminated = 0;

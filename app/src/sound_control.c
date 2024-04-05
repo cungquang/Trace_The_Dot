@@ -88,22 +88,23 @@ static void * Sound_playTargetSound()
 
 static void Sound_playHitTarget(void)
 {
-    Pwm_playHighFNote(150);
+    Pwm_playHighFNote(250);
+    Pwm_playHighANote(50);
     Pwm_playHighANote(50);
     Pwm_playHighBNote(50);
-    Pwm_playHighENote(30);
+    Pwm_playHighENote(50);
     Pwm_playHighENote(20);
     Pwm_playHighENote(20);
-    Pwm_playHighENote(20);
-    Pwm_playHighENote(20);
-
+    Pwm_playHighENote(10);
 }
 
 static void Sound_playMissTarget(void)
 {
-    Pwm_playMiddleCNote(60);
-    Pwm_playMiddleCNote(60);
+    Pwm_playHighANote(200);
+    Pwm_playMiddleCNote(40);
+    Pwm_playMiddleCNote(20);
+    Pwm_playHighANote(50);
     Pwm_playLowDNote(150);
-    Pwm_playLowDNote(50);
-    Pwm_playLowDNote(30);
+    Pwm_playLowDNote(20);
+    Pwm_playLowDNote(20);
 }
