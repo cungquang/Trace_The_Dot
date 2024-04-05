@@ -48,12 +48,13 @@ void Digits_setTerminated(void)
     isTerminated = 1;
 }
 
-void Digits_setValueToDisplay(int displayValue)
+void Digits_setValueToDisplay(long displayValue)
 {
+    printf("display value: %")
     //Access critical section
     pthread_mutex_lock(&shared_section_mutex);
     points_count = displayValue;
-    
+
     //if the dips larger than 99 -> set to 99
     if(displayValue > 99) points_count = 99;
     pthread_mutex_unlock(&shared_section_mutex);

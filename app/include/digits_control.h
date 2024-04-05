@@ -12,6 +12,6 @@ void Digits_init(void);
 void Digits_join(void);
 void Digits_cleanUp(void);
 void Digits_setTerminated(void);
-void Digits_setValueToDisplay(int displayValue);
+void Digits_setValueToDisplay(long displayValue);
 
 #endif

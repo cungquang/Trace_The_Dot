@@ -57,6 +57,7 @@ static void * Joystick_observe()
             if(Accelerometer_aimAtTarget())
             {
                 onTarget_count++;
+                printf("shoot on target: %ld\n", onTarget_count);
                 Sound_setPlayHitOrMiss(1);
                 Digits_setValueToDisplay(onTarget_count);
             }
