@@ -74,6 +74,7 @@ static void * Joystick_observe()
             Pru_setTerminateFlag();
             Accelerometer_terminate();
             Sound_setTerminate();
+            Digits_setTerminated();
         }
     }
 

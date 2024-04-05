@@ -53,10 +53,11 @@ void Digits_setValueToDisplay(int displayValue)
     //Access critical section
     pthread_mutex_lock(&shared_section_mutex);
     points_count = displayValue;
+    
+    //if the dips larger than 99 -> set to 99
+    if(displayValue > 99) points_count = 99;
     pthread_mutex_unlock(&shared_section_mutex);
 
-    //if the dips larger than 99 -> set to 99
-    points_count = points_count > 99? 99 : points_count;
 
     //Convert dips to string
     if(points_count > 9)
