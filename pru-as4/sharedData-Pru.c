@@ -70,8 +70,9 @@ int isTerminated = 0;
 volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_USABLE;
 
 //initiate private function
+void resetShareMemory(volatile sharedMemStruct_t pSharedMemory);
+void resetColor(uint32_t *color);
 void displayLED(uint32_t * color);
-void shutDown(uint32_t * color);
 
 /*
 #########################
@@ -82,14 +83,20 @@ void shutDown(uint32_t * color);
 
 void main(void)
 {
+    //Init color array
+    uint32_t color[STR_LEN];
+
+    //Reset shared memory
+    presetShareMemory(pSharedMemStruct);
+    resetColor(color);
+
     //Start the program
     pSharedMemStruct->terminate_flag = isTerminated;
 
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-    //Init color array
-    uint32_t color[STR_LEN];
+    
 
     while(!isTerminated) 
     {
@@ -113,7 +120,8 @@ void main(void)
 
         if(pSharedMemStruct->terminate_flag)
         {
-            shutDown(color);
+            presetShareMemory(pSharedMemStruct);
+            resetColor(color);
         }
 
         //Send to LED to display
@@ -128,8 +136,9 @@ void main(void)
 #########################
 */
 
-void shutDown(uint32_t *color)
+void resetColor(uint32_t *color)
 {
+    // Clear out all display color
     color[0] = 0;
     color[1] = 0;
     color[2] = 0;
@@ -169,3 +178,17 @@ void displayLED(uint32_t * color)
     __delay_cycles(SPEED);
 }
 
+void resetShareMemory(volatile sharedMemStruct_t pSharedMemory)
+{
+    pSharedMemory->joystickDown_isPressed = false;
+    pSharedMemory->joystickRight_isPressed = false;
+    pSharedMemory->terminate_flag = 0;
+    pSharedMemory->position_1 = 0;
+    pSharedMemory->position_2 = 0;
+    pSharedMemory->position_3 = 0;
+    pSharedMemory->position_4 = 0;
+    pSharedMemory->position_5 = 0;
+    pSharedMemory->position_6 = 0;
+    pSharedMemory->position_7 = 0;
+    pSharedMemory->position_8 = 0;
+}
