@@ -72,6 +72,8 @@ volatile sharedMemStruct_t *pSharedMemStruct = (volatile void *)THIS_PRU_DRAM_US
 //initiate private function
 void resetShareMemory(volatile sharedMemStruct_t pSharedMemory);
 void resetColor(uint32_t *color);
+void resetShareMemory(volatile sharedMemStruct_t pSharedMemory);
+void resetColor(uint32_t *color);
 void displayLED(uint32_t * color);
 
 /*
