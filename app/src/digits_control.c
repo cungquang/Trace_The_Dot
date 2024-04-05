@@ -1,6 +1,6 @@
 #include "../include/digits_control.h"
 
-#define SWITCH_TIME 5
+#define SWITCH_TIME 1
 
 static int isTerminated;
 

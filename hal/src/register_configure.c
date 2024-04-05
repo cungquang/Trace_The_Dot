@@ -5,6 +5,11 @@
 #define I2CDRV_LINUX_BUS2 "/dev/i2c-2"
 
 //14 Segments digits
+#define SET_0x02_0  "i2cset -y 1 0x20 0x02 0x00"
+#define SET_0x03_0  "i2cset -y 1 0x20 0x03 0x00"
+#define SET_0x08_0  "i2cset -y 1 0x20 0x08 0x00"
+#define SET_0x09_0  "i2cset -y 1 0x20 0x09 0x00"
+
 #define DIRECTION_61_OUT "echo out > /sys/class/gpio/gpio61/direction"
 #define ENABLE_61 "echo 1 > /sys/class/gpio/gpio61/value"
 #define DISABLE_61 "echo 0 > /sys/class/gpio/gpio61/value"
@@ -304,8 +309,10 @@ unsigned char I2cbus1Read_OutZH()
 
 void I2cbus1Write_outDir(void)
 {
-    writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, 0x00);
-	writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, 0x00);
-    system(DIRECTION_61_OUT);
-    system(DIRECTION_44_OUT);
+    runCommand(DIRECTION_44_OUT);
+    runCommand(DIRECTION_61_OUT); 
+    runCommand(SET_0x02_0);
+    runCommand(SET_0x03_0);
+    runCommand(SET_0x08_0);
+    runCommand(SET_0x09_0);
 }
