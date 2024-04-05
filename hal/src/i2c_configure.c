@@ -9,8 +9,12 @@
 #define CONFIGURE_PIN_918 "config-pin p9_18 i2c"
 #define CONFIGURE_PIN_917 "config-pin p9_17 i2c"
 #define CONFIGURE_PIN_811 "config-pin P8_11 pruout"
-#define CONFIGURE_PIN_812 "config-pin p8_12 pruout"
 #define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
+
+#define SET_0x02_0  "i2cset -y 1 0x20 0x02 0x00"
+#define SET_0x03_0  "i2cset -y 1 0x20 0x03 0x00"
+#define SET_0x08_0  "i2cset -y 1 0x20 0x08 0x00"
+#define SET_0x09_0  "i2cset -y 1 0x20 0x09 0x00"
 
 static char buffer[MAX_BUFFER_SIZE];
 
@@ -25,14 +29,17 @@ void initI2c_p918(void)
     runCommand(CONFIGURE_PIN_918);
 }
 
+void initI2c_digitConfigure(void)
+{
+    runCommand(SET_0x02_0);
+    runCommand(SET_0x03_0);
+    runCommand(SET_0x08_0);
+    runCommand(SET_0x09_0);
+}
+
 void initI2c_p811(void)
 {
     runCommand(CONFIGURE_PIN_811);
-}
-
-void initI2c_p812(void)
-{
-    runCommand(CONFIGURE_PIN_812);
 }
 
 void initI2c_p815(void)

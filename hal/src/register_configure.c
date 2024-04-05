@@ -91,14 +91,12 @@ void I2cbus1_init()
     {
         initI2c_p811();
     }
-
-    //Pin8_12
-    initI2c_p812();
     
     //Pin8_15
     initI2c_p815();
 
-    //Write out into Directory
+    //Config for 14 segment digits
+    initI2c_digitConfigure();
     I2cbus1Write_outDir();
 }
 
