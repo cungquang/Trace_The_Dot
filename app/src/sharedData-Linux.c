@@ -74,6 +74,16 @@ bool joystickRight_isPressed(void)
     return pSharedPru0->joystickRight_isPressed;
 }
 
+int digitSegment_getCanWrite(void)
+{  
+    return pSharedPru0->canWrite;
+}
+
+int digitSegment_setCanTurn(void)
+{  
+    return pSharedPru0->canTurn = 1;
+}
+
 /////////////////////////////// SETTER ///////////////////////////////
 
 void Pru_setTerminateFlag(void)
