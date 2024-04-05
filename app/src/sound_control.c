@@ -91,7 +91,6 @@ static void Sound_playHitTarget(void)
     Pwm_playHighFNote(50);
     Pwm_playHighANote(50);
     Pwm_playHighENote(30);
-    Joystick_setOnTarget();
 }
 
 static void Sound_playMissTarget(void)

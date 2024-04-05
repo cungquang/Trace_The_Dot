@@ -13,7 +13,7 @@ static int isTerminated = 0;
 
 //Hit
 static int status_curr = 0;
-static int status_count = 0;
+static long status_count = 0;
 static int bounceBack_toZero = 0;
 static long onTarget_count = 0;
 
@@ -65,6 +65,7 @@ static void * Joystick_observe()
             if(Accelerometer_aimAtTarget())
             {
                 Sound_setPlayHitOrMiss(1);
+                Joystick_setOnTarget();
                 Digits_setValueToDisplay(onTarget_count);
             }
             // Miss target
