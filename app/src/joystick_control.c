@@ -4,12 +4,14 @@
 #include "../include/sound_control.h"
 #include "../include/digits_control.h"
 
+//Manage operation
 static int isTerminated = 0;
 
+//Hit
 static int joystickDown_count = 0;
-
 static long onTarget_count = 0;
 
+//Thread
 static pthread_t sound_playTargetSoundThreadId;
 
 // static pthread_mutex_t shared_section_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -99,6 +101,8 @@ static int joystickRight_preventDebounce(int downIsPressed)
         {
             joystickDown_count = joystickDown_count + 1 > 2? 2 : joystickDown_count + 1;
         }
+
+        printf("user press: %d\n", joystickDown_count);
     }
     // user NOT press down
     else

@@ -32,8 +32,8 @@
 #define OXO1_1 0x00
 #define OXOO_2 0x98
 #define OXO1_2 0x83
-#define OXOO_3 0x18
-#define OXO1_3 0xa3
+#define OXOO_3 0xd8
+#define OXO1_3 0x43
 #define OXOO_4 0xc8
 #define OXO1_4 0x22
 #define OXOO_5 0x58

@@ -1,6 +1,6 @@
 #include "../include/digits_control.h"
 
-#define SWITCH_TIME 5
+#define SWITCH_TIME 1
 
 static int isTerminated = 0;
 
@@ -50,7 +50,6 @@ void Digits_setTerminated(void)
 
 void Digits_setValueToDisplay(long displayValue)
 {
-    printf("display value: %ld", displayValue);
     //Access critical section
     pthread_mutex_lock(&shared_section_mutex);
     points_count = displayValue;
