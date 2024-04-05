@@ -28,9 +28,13 @@ void operation(void)
 int main(void)
 {
     I2cbus1_init();
-    Digits_setValueToDisplay(14);
-    Digits_init();
-    Digits_join();
+    Digits_setValueToDisplay(29);
+    I2cbus1Write_No9();
+
+    I2cbus1_disableRightDigit();
+    I2cbus1_disableLeftDigit();
+    // Digits_init();
+    // Digits_join();
     
 
     //operation();

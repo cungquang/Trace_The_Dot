@@ -1,6 +1,6 @@
 #include "../include/digits_control.h"
 
-#define SWITCH_TIME 1
+#define SWITCH_TIME 5
 
 static int isTerminated;
 
@@ -66,12 +66,14 @@ void Digits_setValueToDisplay(int displayValue)
         
         point_leftDigit = number[0] - '0';
         point_rightDigit = number[1] - '0';
+        printf("left_digit: %d   right_digit: %d\n", point_leftDigit, point_rightDigit);
     } else{
         char number[2];
         snprintf(number, sizeof(number), "%d", points_count);
 
         point_leftDigit = 0;
         point_rightDigit = number[0] - '0';
+        // printf("left_digit: %d   right_digit: %d\n", point_leftDigit, point_rightDigit);
     }    
 }
 

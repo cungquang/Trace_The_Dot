@@ -5,9 +5,11 @@
 #define I2CDRV_LINUX_BUS2 "/dev/i2c-2"
 
 //14 Segments digits
+#define DIRECTION_61_OUT "echo out > /sys/class/gpio/gpio61/direction"
 #define ENABLE_61 "echo 1 > /sys/class/gpio/gpio61/value"
 #define DISABLE_61 "echo 0 > /sys/class/gpio/gpio61/value"
 
+#define DIRECTION_44_OUT "echo out > /sys/class/gpio/gpio44/direction"
 #define ENABLE_44 "echo 1 > /sys/class/gpio/gpio44/value"
 #define DISABLE_44 "echo 0 > /sys/class/gpio/gpio44/value"
 
@@ -27,8 +29,8 @@
 #define OXO1_2 0x83
 #define OXOO_3 0x18
 #define OXO1_3 0xa3
-#define OXOO_4 0x22
-#define OXO1_4 0xc8
+#define OXOO_4 0xc8
+#define OXO1_4 0x22
 #define OXOO_5 0x58
 #define OXO1_5 0x23
 #define OXOO_6 0x58
@@ -304,4 +306,6 @@ void I2cbus1Write_outDir(void)
 {
     writeI2cReg(i2c1_FileDesc_Digits, REG_DIRA, 0x00);
 	writeI2cReg(i2c1_FileDesc_Digits, REG_DIRB, 0x00);
+    system(DIRECTION_61_OUT);
+    system(DIRECTION_44_OUT);
 }
