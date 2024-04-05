@@ -3,7 +3,7 @@
 #include "../include/joystick_control.h"
 #include "../include/sound_control.h"
 #include "../../hal/include/register_configure.h"
-#include <stdbool.h>
+#include "../include/digits_control.h"
 
 
 void operation(void)
@@ -28,7 +28,7 @@ void operation(void)
 int main(void)
 {
     I2cbus1_init();
-    
+    Digits_setValueToDisplay();
     
 
     //operation();
