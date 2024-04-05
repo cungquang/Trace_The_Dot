@@ -28,7 +28,9 @@ void operation(void)
 int main(void)
 {
     I2cbus1_init();
-    Digits_setValueToDisplay();
+    Digits_setValueToDisplay(14);
+    Digits_init();
+    Digits_join();
     
 
     //operation();
