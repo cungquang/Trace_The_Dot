@@ -25,6 +25,9 @@ void operation(void)
     Joystick_join();
 
     // Cleanup share data
+    Accelerometer_cleanup();
+    Sound_cleanup();
+    Digits_cleanUp();
     SharedData_cleanup();
 }
 
