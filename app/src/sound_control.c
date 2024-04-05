@@ -100,11 +100,11 @@ static void Sound_playHitTarget(void)
 
 static void Sound_playMissTarget(void)
 {
-    Pwm_playHighANote(200);
-    Pwm_playMiddleCNote(40);
+    Pwm_playMiddleCNote(200);
     Pwm_playMiddleCNote(20);
-    Pwm_playHighANote(50);
+    Pwm_playHighANote(40);
     Pwm_playLowDNote(150);
+    Pwm_playHighANote(50);
     Pwm_playLowDNote(20);
     Pwm_playLowDNote(20);
 }
