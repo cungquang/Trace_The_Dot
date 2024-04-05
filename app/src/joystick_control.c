@@ -58,6 +58,7 @@ static void * Joystick_observe()
 {
     while(!isTerminated)
     {
+        
         if(joystickRight_preventDebounce(joystickDown_isPressed()))
         {
             // On target
@@ -74,7 +75,7 @@ static void * Joystick_observe()
         }
         
         // Joystick Right is press -> shutdown
-        if(joystickRight_preventDebounce(joystickRight_isPressed()))
+        if(joystickRight_isPressed())
         {
             isTerminated = 1;
             Pru_setTerminateFlag();
@@ -95,6 +96,7 @@ static int joystickRight_preventDebounce(int downIsPressed)
     // user press down
     if(status_curr == 0 && downIsPressed == 1)
     {
+        // printf("status----> %d    downispress----->%d    count-----> %d\n", status_curr, downIsPressed, status_count);
         status_count = downIsPressed;
         status_curr = 1;
         return 1;
@@ -102,18 +104,7 @@ static int joystickRight_preventDebounce(int downIsPressed)
     // Multiple press
     else if (status_curr == 1 && downIsPressed == 1)
     {
-        //trigger 2nd press
-        if(status_count > MULTIPLE_CLICK_BOUND)
-        {
-            status_curr = 0;
-            status_count = 0;
-            return 1;
-        }
-        //prevent debouncing
-        else{
-            status_count++;
-            return 0;
-        }
+        status_count++;
 
         //Stop bounce back accumulate - must be continuous
         bounceBack_toZero = 0;
@@ -126,11 +117,9 @@ static int joystickRight_preventDebounce(int downIsPressed)
             status_count = 0;
             status_curr = 0;
             bounceBack_toZero = 0;
-            return 0;
         }
         else{
             bounceBack_toZero++;
-            return 1;
         }
     }
     else
