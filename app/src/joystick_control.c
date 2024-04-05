@@ -40,7 +40,7 @@ void Joystick_join(void)
 
 void Joystick_setOnTarget(void)
 {
-    onTarget_count++;
+    onTarget_count += 1;
 }
 
 /*
@@ -101,8 +101,6 @@ static int joystickRight_preventDebounce(int downIsPressed)
         {
             joystickDown_count = joystickDown_count + 1 > 2? 2 : joystickDown_count + 1;
         }
-
-        printf("user press: %d\n", joystickDown_count);
     }
     // user NOT press down
     else
