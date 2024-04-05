@@ -50,7 +50,7 @@ void Digits_setTerminated(void)
 
 void Digits_setValueToDisplay(long displayValue)
 {
-    printf("display value: %")
+    printf("display value: %ld", displayValue);
     //Access critical section
     pthread_mutex_lock(&shared_section_mutex);
     points_count = displayValue;
