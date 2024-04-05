@@ -74,7 +74,6 @@ static void * Sound_playTargetSound()
         {
             Sound_playHitTarget();
             playHitOrMiss = 0;
-            Joystick_setOnTarget();
         }
         else if(playHitOrMiss == 2)
         {
@@ -89,9 +88,10 @@ static void * Sound_playTargetSound()
 
 static void Sound_playHitTarget(void)
 {
-    Pwm_playHighFNote(70);
+    Pwm_playHighFNote(50);
     Pwm_playHighANote(50);
     Pwm_playHighENote(30);
+    Joystick_setOnTarget();
 }
 
 static void Sound_playMissTarget(void)

@@ -4,12 +4,17 @@
 #include "../include/sound_control.h"
 #include "../include/digits_control.h"
 
+#define DELAY_MILLISECONDS 10
+#define MULTIPLE_CLICK_BOUND 10
+#define DEBOUNCE_LIMIT 10
+
 //Manage operation
 static int isTerminated = 0;
 
 //Hit
-// static int previousPress = 0;
-static int joystickDown_count = 0;
+static int status_curr = 0;
+static int status_count = 0;
+static int bounceBack_toZero = 0;
 static long onTarget_count = 0;
 
 //Thread
@@ -53,14 +58,12 @@ static void * Joystick_observe()
 {
     while(!isTerminated)
     {
-
         if(joystickRight_preventDebounce(joystickDown_isPressed()))
         {
             // On target
             if(Accelerometer_aimAtTarget())
             {
                 Sound_setPlayHitOrMiss(1);
-                // printf("shoot on target: %ld\n", onTarget_count);
                 Digits_setValueToDisplay(onTarget_count);
             }
             // Miss target
@@ -79,6 +82,8 @@ static void * Joystick_observe()
             Sound_setTerminate();
             Digits_setTerminated();
         }
+
+        sleepForMs(DELAY_MILLISECONDS);
     }
 
     return NULL;
@@ -88,24 +93,51 @@ static void * Joystick_observe()
 static int joystickRight_preventDebounce(int downIsPressed)
 {
     // user press down
-    if(downIsPressed)
+    if(status_curr == 0 && downIsPressed == 1)
     {
-        // Not yet press for the first time
-        if(joystickDown_count == 0)
+        status_count = downIsPressed;
+        status_curr = 1;
+        return 1;
+    } 
+    // Multiple press
+    else if (status_curr == 1 && downIsPressed == 1)
+    {
+        //trigger 2nd press
+        if(status_count > MULTIPLE_CLICK_BOUND)
         {
-            joystickDown_count = 1;
+            status_curr = 0;
+            status_count = 0;
             return 1;
         }
-        // Have pressed before
-        else
+        //prevent debouncing
+        else{
+            status_count++;
+            return 0;
+        }
+
+        //Stop bounce back accumulate - must be continuous
+        bounceBack_toZero = 0;
+    }
+    else if (status_curr == 1 && downIsPressed == 0)
+    {
+        // Actually back to 0
+        if(bounceBack_toZero > DEBOUNCE_LIMIT)
         {
-            joystickDown_count = joystickDown_count + 1 > 2? 2 : joystickDown_count + 1;
+            status_count = 0;
+            status_curr = 0;
+            bounceBack_toZero = 0;
+            return 0;
+        }
+        else{
+            bounceBack_toZero++;
+            return 1;
         }
     }
-    // user NOT press down
     else
     {
-        joystickDown_count = 0;
+        status_count = 0;
+        status_curr = 0;
+        bounceBack_toZero = 0;
     }
 
     return 0;
