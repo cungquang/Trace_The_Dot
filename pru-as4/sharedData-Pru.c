@@ -78,7 +78,6 @@ void shutDown(uint32_t * color);
 void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs);
 void delay(unsigned int delayInMs);
 
-
 void main(void)
 {
     //Start the program
@@ -120,7 +119,7 @@ void main(void)
         displayLED(color);      
 
         //Display digit
-        flashOn(delayInMs, 150);
+        flashOn(delayInMs, 100);
     }
 }
 
@@ -174,11 +173,33 @@ void delay(unsigned int delayInMs)
     }
 }
 
-void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs) 
+void flashOn(unsigned int delayOnInMs, unsigned int delayOffInMs, volatile sharedMemStruct_t *pSharedMem) 
 {
-    __R30 |= DIGIT_ON_OFF_MASK;
+    //Turn off
+    __R30 &= ~DIGIT_ON_OFF_MASK;
+    pSharedMem->canWrite = 1;
+
+    //Wait for finish writing
+    while(!pSharedMem->canTurn)
+    {
+        delay(1);
+    }
+
+    //Turn on
+    __R30 |= DIGIT_ON_OFF_MASK;    
     delay(delayOffInMs);
 
+    //Turn off
     __R30 &= ~DIGIT_ON_OFF_MASK;
+    pSharedMem->canWrite = 1;
+
+    //Wait for finish writing
+    while(!pSharedMem->canTurn)
+    {
+        delay(1);
+    }
+
+    //Turn on
+    __R30 |= DIGIT_ON_OFF_MASK;  
     delay(delayOffInMs);
 }

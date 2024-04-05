@@ -8,7 +8,7 @@
 
 #define CONFIGURE_PIN_918 "config-pin p9_18 i2c"
 #define CONFIGURE_PIN_917 "config-pin p9_17 i2c"
-#define CONFIGURE_PIN_811 "config-pin P8.11 pruout"
+#define CONFIGURE_PIN_811 "config-pin P8_11 pruout"
 #define CONFIGURE_PIN_812 "config-pin p8_12 pruout"
 #define CONFIGURE_PIN_815 "config-pin p8_15 pruin"
 

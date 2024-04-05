@@ -116,22 +116,22 @@ void I2c1FileDescAccelerometer_close(void)
 
 void I2cbus1_enableRightDigit(void)
 {
-    runCommand(ENABLE_61);
+    system(ENABLE_61);
 }
 
 void I2cbus1_disableRightDigit(void)
 {
-    runCommand(DISABLE_61);
+    system(DISABLE_61);
 }
 
 void I2cbus1_enableLeftDigit(void)
 {
-    runCommand(ENABLE_44);
+    system(ENABLE_44);
 }
 
 void I2cbus1_disableLeftDigit(void)
 {
-    runCommand(DISABLE_44);
+    system(DISABLE_44);
 }
 
 void I2cbus1Write_No0(void)

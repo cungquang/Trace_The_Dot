@@ -29,19 +29,23 @@ int main(void)
 {
     I2cbus1_init();
     
-    //Turn off both digit
-    I2cbus1_disableRightDigit();
-    I2cbus1_disableLeftDigit();    
+    while(1)
+    {
+        //Turn off both digit
+        // I2cbus1_disableRightDigit();
+        // I2cbus1_disableLeftDigit();    
 
-    //Write left 
-    I2cbus1Write_No8();
-    I2cbus1_enableLeftDigit();
-    sleepForMs(5);
+        //Write left 
+        I2cbus1Write_No1();
+        // I2cbus1_enableLeftDigit();
+        sleepForMs(250);
 
-    //Write right
-    I2cbus1Write_No9();
-    I2cbus1_enableRightDigit();
-    sleepForMs(5);
+        //Write right`
+        I2cbus1Write_No9();
+        // I2cbus1_enableRightDigit();
+        sleepForMs(150);
+
+    }
 
     //operation();
 }
